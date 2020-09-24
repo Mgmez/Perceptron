@@ -1,51 +1,50 @@
-const  Perceptron = class{
+import { fireEvent } from "@testing-library/react";
+
+class  Perceptron {
+  
+    constructor(size, learningRate, iterations){
+		this.w  = [];
+		this.lr = learningRate || 0.01;
+        this.it = iterations || 10;
+            
+        
+        for(var i = 0; i<size+1; i++){
+            this.w[i] = Math.random() * (5 - (-5)) + (-5);
+        }        
+        console.log(this.w);  
+	}
+
+   
+    fit = (x,y) =>{
+    
+        console.log(this.w);  
+        var done = false;    
+        var error = 0;
+        var epoca = 0;
+        while(!done || epoca<this.iterations){
+            done = true;
+            //Epocas
+            console.log("Epoca: ", epoca +1);
+            for(var j = 0; j<x.length;j++){
+                error = y[j] - this.predict(x[j]);
+                console.log("error: ", error);
+                if(error !==0){
+                    done = false;
+                    this.w[j] += this.learningRate  * error * this.x[j];
+                }
+            }    
+        }
+
+    }
+
+    predict = (inputs) => {
+        var activation = 0;
+            for(var i = 0; i < inputs.length; i++){
+                activation += this.w[i+1] * inputs[i];
+            }
+            return activation >= 0 ? 1 : 0;
+        }
 
     
-    constructor(inputs,outputs,learningRate){
-            this.w = []
-            this.lr = learningRate || 0.01;
-                   
-            this.x = inputs || [
-                [5, 3],
-                [4, 1],
-                [3, 2],
-                [3, 3]
-            ];
-            this.y = outputs || [0,0,1,1];
-            
-            for(var i = 0; i<this.x.length; i++){
-                this.w[i] = Math.random();
-            }
-            console.log(this.w);            
-    }
-
- fit (){   
-    var done = false;
-    var error = 0;
-    console.log(this.x);
-/*    while(!done){
-        done = true;
-        for(var j = 0; j< this.x.length;j++){
-
-            error = this.y[j] - this.predict(this.x[j]);
-            console.log("error: ", error);
-
-            if(error !==0){
-                done = false;
-                //this.w[j] += this.learningRate  * error * this.x;
-            }
-        }    
-    }*/
-
-}
-
-    predict(inputs){
-        var activation = this.w[0];
-        for(var i = 0; i < inputs.length; i++){
-            activation += this.w[i+1] * inputs[i];
-        }
-        return activation >= 0 ? 1 : 0;
-    }
-
 }
 export default Perceptron;
