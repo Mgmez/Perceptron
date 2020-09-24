@@ -34,18 +34,26 @@ class  Perceptron {
 
         while(done === false){
             done = true;
-            //Epocas
+            //Epocas            
+
             console.log("Epoca: ", epoca+1);
+
             for(var j = 0; j<x.length; j++){
                 error = y[j] - this.predict(x[j]);
-                console.log("error: ", error);
+                console.log("Error: ",error );
                 if(error!=0){
-                    done = false;
-                    this.w[j] += this.learningRate  * error * x[j];
+                    done = false;                    
+                    console.log("Ajustando w");
+                    for(let k=0;  k< x[j].length; k++){
+                        console.log("Antes del ajuste: w: %f, lr: %f, error: %d", this.w[k+1], this.learningRate, error);
+                        this.w[k+1] += this.learningRate * error * x[j][k];
+                        console.log("Despues: w: %f ", this.w[k+1]);
+                    }
+                    
                 }
             }
             epoca += 1;   
-            if(epoca >=5){
+            if(epoca >=this.iterations){
                 break;
             } 
         }
@@ -53,16 +61,16 @@ class  Perceptron {
     }
 
     predict = (inputs) => {
-            let activation = 0;
-            console.log("x[j]: ", inputs);
-            console.log("Pesos ", this.w);
+            let suma = this.w[0];         
             for(var i = 0; i < inputs.length; i++){
-                activation += this.w[i+1] * inputs[i];
+                suma += this.w[i+1] * inputs[i];               
             }
-            const k = activation  >= 0 ? 1 : 0;
-            return k;
+            //console.log("Suma: ", activation);
+            const activation = suma  >= 0 ? 1 : 0;            
+            return activation;
             
         }
+      
 
     
 }

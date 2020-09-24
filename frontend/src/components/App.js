@@ -6,21 +6,22 @@ import Perceptron from '../hoocks/Perceptron';
 function App() { 
 
   const [salida, setSalida ]= useState("");
-  var perceptron;
+  const [perceptron, setPerceptron] = useState(null);
   
 
   const iniciarPesos = () =>{
-     perceptron = new Perceptron(4, 0.01, 30);
+     setPerceptron( new Perceptron(4, 0.01, 1000));
   }
   const entrenar = () =>{
     perceptron.fit();
-    console.log("xdxd");
-
     console.log(perceptron.w);
   }
   const probar = () =>{
-    const x = [[3, 3]];
-    setSalida(perceptron.predict(x));
+    const x = [4, 1, 3];
+    const xd = perceptron.predict(x);
+    console.log("Salida perceptron :", xd);
+    setSalida(xd);
+    
   }
 
   return (
@@ -28,7 +29,7 @@ function App() {
       <header className="App-header">        
         <p>Perceptrón </p>
 
-        <input type="submit" value="INiciar" onClick  = {iniciarPesos}/>
+        <input type="submit" value="Iniciar" onClick  = {iniciarPesos}/>
         
         <input type="submit" value="Entenar" onClick  = {entrenar}/>
 
