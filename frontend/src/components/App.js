@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Perceptron from '../pages/Perceptron';
-import PerceptronA from '../hoocks/Perceptron';
+import PerceptronA from '../hooks/Perceptron';
 //import usePerceptron from '../hoocks/usePerceptron';
 
 function App() { 
