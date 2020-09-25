@@ -1,17 +1,22 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 var widthCanvas, heightCanvas;
 
 const CartesianPlane = (props) => {
+    const [trainingSet, setTrainingSet] = useState([]);
+
+    const canvasRef = useRef(null)
+
+    const MAX_Y = 5, MAX_X = 5;
+    const MIN_Y = -5, MIN_X = -5;
     
     useEffect(() => {
-        document.getElementById("cartesian_plane").style.width = "auto";
-        widthCanvas = document.getElementById("cartesian_plane").width;
-        heightCanvas = document.getElementById("cartesian_plane").height;
+        canvasRef.current.style.width = "auto";
+        widthCanvas = canvasRef.current.width;
+        heightCanvas = canvasRef.current.height;
 
-        var canvas = document.getElementById("cartesian_plane"),
-            ctx = canvas.getContext("2d"),
-            cty = canvas.getContext("2d");
+        let ctx = canvasRef.current.getContext("2d"),
+            cty = canvasRef.current.getContext("2d");
             
         ctx.moveTo(widthCanvas/2,0);
         ctx.lineTo(widthCanvas/2,heightCanvas);
@@ -20,70 +25,67 @@ const CartesianPlane = (props) => {
         cty.moveTo(0,heightCanvas/2);
         cty.lineTo(widthCanvas,heightCanvas/2);
         cty.stroke();
+
+
+        ctx.font = "10px Arial";
+        for (let i = MIN_X; i < MAX_X; i++) {
+            if (i === 0) continue
+            ctx.fillText(`${i}`, XC(i), YC(-0.2));
+            ctx.fillText(`${i}`, XC(0.1), YC(i));
+        }
+        ctx.fillText(`${MAX_X}`, widthCanvas-10, YC(-0.2));
+        ctx.fillText(`${MAX_Y}`, XC(0.1), 10);
     }, [])
     
-    
-    const MaxX = () => {
-        return 5;
-    }
-    
-    // Returns the left boundary of the logical viewport:
-    const MinX = () => {
-        return -5;
-    }
-
-    const MaxY = () => {
-        return 5;
-    }
-    
-    // Returns the left boundary of the logical viewport:
-    const MinY = () => {
-        return -5;
-    }
 
     // Returns the physical x-coordinate of a logical x-coordinate:
     const XC = (x) => {
-        return (x - MinX()) / (MaxX() - MinX()) * widthCanvas
+        return (x - MIN_X) / (MAX_X - MIN_X) * widthCanvas
     }
 
     // Returns the physical y-coordinate of a logical y-coordinate:
     const YC = (y) => {
-        return heightCanvas - (y - MinY()) / (MaxY() - MinY()) * heightCanvas ;
+        return heightCanvas - ((y - MIN_Y) * heightCanvas) / (MAX_Y - MIN_Y);
     }
 
     // Returns the logical x-coordinate of a physical x-coordinate:
     const XL = (x) => {
-        //return (x * widthCanvas) / (MaxX() - MinX()) + MinX()
-        return ((x * (MaxX() - MinX() ) ) / widthCanvas)  + MinX()
+        return ((x * (MAX_X - MIN_X ) ) / widthCanvas)  + MIN_X
     }
 
     // Returns the logical y-coordinate of a physical y-coordinate:
     const YL = (y) => {
-        //return heightCanvas - (y - MinY()) / (MaxY() - MinY()) * heightCanvas ;
-        return MaxY() - (y * (MaxY() - MinY())) / heightCanvas;
-        //return  y * heightCanvas  - (MinY()/MaxY()-MinY()) *  heightCanvas
+        return MAX_Y - (y *  (MAX_Y - MIN_Y)) / heightCanvas;
     }
     
     const handleClick = (event) => {
         event.preventDefault();
-        const canvas = document.getElementById("cartesian_plane"), 
+        
+        const canvas = canvasRef.current,
             rect = canvas.getBoundingClientRect(),
+            ctx = canvas.getContext("2d"),
             physicalXCoordinate = event.clientX - rect.left,
             physicalYCoordinate = event.clientY - rect.top,
             logicalXCoordinate = XL(physicalXCoordinate),
             logicalYCoordinate = YL(physicalYCoordinate)
-        console.log(logicalXCoordinate)
-        console.log(logicalYCoordinate)
 
-        //////
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(physicalXCoordinate-2,physicalYCoordinate-2,4,4); //cuadrito
-
-        /*ctx.beginPath(); 
-        ctx.arc(95,50 ,5,0,2*Math.PI);//circulito
-        ctx.stroke();
-        */
+        if(event.type === "click"){
+            ctx.fillStyle = "#FF0000";
+            ctx.fillRect(physicalXCoordinate-2,physicalYCoordinate-2,4,4); //cuadrito
+        } else {
+            ctx.fillStyle = "#0000FF";
+            ctx.beginPath(); 
+            ctx.arc(physicalXCoordinate-1.25,physicalYCoordinate-1.25,2.5,0,2*Math.PI);//circulito
+            ctx.stroke();
+        }
+        setTrainingSet([
+            ...trainingSet,
+            {
+                x: physicalXCoordinate,
+                y: physicalYCoordinate,
+                value: event.type === "click" ? 1 : 0
+            }
+        ])
     }
 
     return <>
@@ -94,6 +96,7 @@ const CartesianPlane = (props) => {
             onContextMenu={handleClick}
             width={500}
             height={500}
+            ref={canvasRef}
         ></canvas>
     </>
 }
