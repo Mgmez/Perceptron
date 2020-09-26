@@ -6,14 +6,17 @@ class  Perceptron {
 		this.w  = [];
 		this.learningRate=  lr || 0.01;
         this.iterations =  it || 10;
-            
-        
+        this.error = 0;
+        this.errorAcumulado = [];
+
         for(var i = 0; i<size+1  ; i++){
             this.w[i] = Math.random() * (5 - (-5)) + (-5);
         }
         console.log(this.w);
-	}
-
+	}/**
+    static instanciar(){
+        return new Perceptron()
+    }*/
    
 
     fit = (inputs, outputs) =>{
@@ -28,10 +31,10 @@ class  Perceptron {
 
     
         var done = false;    
-        var error = 0;
+        //var error = 0;
         var epoca = 0;
         
-
+        var sumaError = 0;
         while(done === false){
             done = true;
             //Epocas            
@@ -39,23 +42,26 @@ class  Perceptron {
             console.log("Epoca: ", epoca+1);
 
             for(var j = 0; j<x.length; j++){
-                error = y[j] - this.predict(x[j]);
-                console.log("Error: ",error );
-                if(error!=0){
-                    done = false;                    
+                this.error = y[j] - this.predict(x[j]);
+                console.log("Error: ",this.error );
+                sumaError += this.error;
+                if(this.error!=0){
+                    done = false;
                     console.log("Ajustando w");
                     for(let k=0;  k< x[j].length; k++){
-                        console.log("Antes del ajuste: w: %f, lr: %f, error: %d", this.w[k+1], this.learningRate, error);
-                        this.w[k+1] += this.learningRate * error * x[j][k];
+                        console.log("Antes del ajuste: w: %f, lr: %f, error: %d", this.w[k+1], this.learningRate, this.error);
+                        this.w[k+1] += this.learningRate * this.error * x[j][k];
                         console.log("Despues: w: %f ", this.w[k+1]);
                     }
                     
                 }
             }
+            this.errorAcumulado.push({epoca: "Ep "+epoca, error: sumaError});
             epoca += 1;   
+            sumaError = 0;
             if(epoca >=this.iterations){
                 break;
-            } 
+            }
         }
 
     }

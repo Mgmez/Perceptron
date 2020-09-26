@@ -1,18 +1,51 @@
-import React from "react";
+import React,{useContext, useState} from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Form } from 'react-bootstrap';
 
 import { Button, TextField } from '@material-ui/core';
+import Perceptron from '../hooks/Perceptron.js';
+import { PerceptronContext } from "./PerceptronContext.js";
+
+
+
+
 
 const PerceptronConfigs = (props) =>  {
-    const { handleSubmit, register, errors, control } = useForm();
 
-    const onSubmit = async (values) => {
-        console.log(values)
-    };
+    
+    //const [perceptron, setPerceptron] = useState(null);
+    //const [entrenado, setEntrenado] = useState(false);    
+    const { handleSubmit, register, errors, control } = useForm();
+    const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
+    
+    const iniciarPesos = async (values) =>{        
+        console.log(values);
+        setPerceptronState( {
+            perceptron: new Perceptron(4, values.learning_rate, values.max_epic_number),
+            entrenado: false 
+        });
+      }
+      const entrenar = () =>{                
+        perceptronState.perceptron.fit();     
+        setPerceptronState( {
+            perceptron: perceptronState.perceptron,
+            entrenado: true
+        });           
+        console.log(perceptronState.perceptron.w);
+      }
+      const probar = () =>{
+      
+        const x = [1, 0, 1];
+     //   const xd = perceptronState.perceptron.predict(x);
+       
+        
+        
+      }
+      
+  
 
     return <>
-        <Form onSubmit={handleSubmit(onSubmit)} className="">
+        <Form onSubmit={handleSubmit(iniciarPesos)} className="">
             <Controller
                 as={TextField}
                 name="learning_rate"
@@ -43,9 +76,13 @@ const PerceptronConfigs = (props) =>  {
                 fullWidth
             />
             
-            <Button className="mt-4" fullWidth color="primary" style={{color: "#03A9F4"}}>Inicializar</Button>
+            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>
+            
+        </Form>
+        <Form onSubmit={handleSubmit(entrenar)} className="">                        
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Perceptrón</Button>
         </Form>
+        
 
     </>
 }
