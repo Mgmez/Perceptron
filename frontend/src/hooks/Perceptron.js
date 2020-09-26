@@ -28,8 +28,7 @@ class  Perceptron {
             [3, 3, 3]
         ];
         const y = outputs || [0,0,1,1];
-
-    
+        
         var done = false;    
         //var error = 0;
         var epoca = 0;

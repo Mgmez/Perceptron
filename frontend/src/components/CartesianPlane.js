@@ -93,11 +93,11 @@ const CartesianPlane = (props) => {
             entrenado: perceptronState.entrenado,
             x: [
                 ...perceptronState.x,
-                {
-                    x: physicalXCoordinate,
-                    y: physicalYCoordinate,
-                    bias: Math.random() * (5 - (-5)) + (-5),                     
-                }
+                [
+                    logicalXCoordinate,
+                    logicalYCoordinate,
+                    Math.random() * (5 - (-5)) + (-5)
+                ]
             ],
             y: [
                 ...perceptronState.y,
