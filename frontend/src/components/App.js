@@ -8,7 +8,12 @@ import {PerceptronContext} from '../components/PerceptronContext';
 import PerceptronA from '../hooks/Perceptron.js';
 
 function App() { 
-  const [perceptronState, setPerceptronState] = useState({});
+  const [perceptronState, setPerceptronState] = useState({
+    perceptron : null,
+    entrenado: false,
+    x : [],
+    y : []
+  });
 
  
   return (

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext} from "react";
+import { PerceptronContext } from "./PerceptronContext";
 
 var widthCanvas, heightCanvas;
 
 const CartesianPlane = (props) => {
-    const [trainingSet, setTrainingSet] = useState([]);
+    //const [trainingSet, setTrainingSet] = useState([]);
+    const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
 
     const canvasRef = useRef(null)
 
@@ -77,7 +79,7 @@ const CartesianPlane = (props) => {
             ctx.beginPath(); 
             ctx.arc(physicalXCoordinate-1.25,physicalYCoordinate-1.25,2.5,0,2*Math.PI);//circulito
             ctx.stroke();
-        }
+        }/*
         setTrainingSet([
             ...trainingSet,
             {
@@ -85,7 +87,23 @@ const CartesianPlane = (props) => {
                 y: physicalYCoordinate,
                 value: event.type === "click" ? 1 : 0
             }
-        ])
+        ])*/
+        setPerceptronState( {
+            perceptron: perceptronState.perceptron,
+            entrenado: perceptronState.entrenado,
+            x: [
+                ...perceptronState.x,
+                {
+                    x: physicalXCoordinate,
+                    y: physicalYCoordinate,
+                    bias: Math.random() * (5 - (-5)) + (-5),                     
+                }
+            ],
+            y: [
+                ...perceptronState.y,
+                event.type === "click" ? 1 : 0                
+            ]
+        });           
     }
 
     return <>

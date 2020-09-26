@@ -21,15 +21,19 @@ const PerceptronConfigs = (props) =>  {
     const iniciarPesos = async (values) =>{        
         console.log(values);
         setPerceptronState( {
-            perceptron: new Perceptron(4, values.learning_rate, values.max_epic_number),
-            entrenado: false 
+            perceptron: new Perceptron(perceptronState.x.length, values.learning_rate, values.max_epic_number),
+            entrenado: false ,
+            x : perceptronState.x,
+            y : perceptronState.y
         });
       }
       const entrenar = () =>{                
-        perceptronState.perceptron.fit();     
+        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
             perceptron: perceptronState.perceptron,
-            entrenado: true
+            entrenado: true,
+            x : perceptronState.x,
+            y : perceptronState.y
         });           
         console.log(perceptronState.perceptron.w);
       }
