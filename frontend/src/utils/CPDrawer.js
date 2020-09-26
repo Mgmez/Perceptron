@@ -70,6 +70,11 @@ class CPDrawer {
     }
 
     drawLine(x1, y1, x2, y2, color="#000") {
+        x1 = this.XC(x1);
+        x2 = this.XC(x2);
+        y1 = this.YC(y1);
+        y2 = this.YC(y2);
+        
         const context = this.canvas.getContext("2d");
         
         context.strokeStyle = color;
@@ -81,8 +86,18 @@ class CPDrawer {
 
     clearCanvas() {
         const context = this.canvas.getContext("2d");
+        
+        //context.clearRect(0,0, this.widthCanvas, this.heightCanvas);
 
-        context.clearRect(0,0, this.widthCanvas, this.heightCanvas);
+        // Store the current transformation matrix
+        context.save();
+
+        // Use the identity matrix while clearing the canvas
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.clearRect(0, 0, this.widthCanvas, this.heightCanvas);
+
+        // Restore the transform
+        context.restore();
     }
 }
 

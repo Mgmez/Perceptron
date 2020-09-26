@@ -12,7 +12,9 @@ function App() {
     perceptron : null,
     entrenado: false,
     x : [],
-    y : []
+    y : [],
+    cpDrawer: null,
+    pesoModificado: false
   });
 
  

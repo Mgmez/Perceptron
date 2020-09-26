@@ -2,7 +2,8 @@ import React,{useContext, useState } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import { PerceptronContext } from "./PerceptronContext";
 const ErrorChart = (props) =>  {
-    const {perceptronState} = useContext(PerceptronContext);  
+    const {perceptronState} = useContext(PerceptronContext);
+    console.log("aaa", perceptronState.perceptron.errorAcumulado) 
     return <>
           { perceptronState.entrenado &&
           <ResponsiveContainer>

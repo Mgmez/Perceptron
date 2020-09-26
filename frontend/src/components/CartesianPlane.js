@@ -13,6 +13,10 @@ const CartesianPlane = (props) => {
     useEffect(() => {
         canvasRef.current.style.width = "auto";
         cpDrawer = new CPDrawer(canvasRef.current)
+        setPerceptronState({
+            ...perceptronState,
+            cpDrawer: cpDrawer
+        })
 
         cpDrawer.drawAxis();
         
@@ -32,9 +36,8 @@ const CartesianPlane = (props) => {
 
         cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);
 
-        setPerceptronState( {
-            perceptron: perceptronState.perceptron,
-            entrenado: perceptronState.entrenado,
+        setPerceptronState({
+            ...perceptronState,
             x: [
                 ...perceptronState.x,
                 [

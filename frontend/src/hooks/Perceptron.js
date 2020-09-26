@@ -1,25 +1,29 @@
-
+import React, {useContext} from 'react';
+import {  PerceptronContext} from "../components/PerceptronContext";
 
 class  Perceptron {
   
-    constructor(size, lr, it){
+   
+    
+    constructor(size, lr, it, cp){
+        //const  {perceptronState} = useContext(PerceptronContext);
+        this.estado = cp;
+
 		this.w  = [];
-		this.learningRate=  lr || 0.01;
+		this.learningRate= parseFloat(lr) || 0.01;
         this.iterations =  it || 10;
         this.error = 0;
         this.errorAcumulado = [];
-
+        this.recta = [];
         for(var i = 0; i<size+1  ; i++){
             this.w[i] = Math.random() * (5 - (-5)) + (-5);
         }
         console.log(this.w);
-	}/**
-    static instanciar(){
-        return new Perceptron()
-    }*/
+        //this.pesoModificado = false;
+	}
    
 
-    fit = (inputs, outputs) =>{
+    fit = async (inputs, outputs) =>{
    
         const x = inputs || [
             [5, 3, 2],
@@ -32,7 +36,7 @@ class  Perceptron {
         var done = false;    
         //var error = 0;
         var epoca = 0;
-        
+        let x2 = [];
         var sumaError = 0;
         while(done === false){
             done = true;
@@ -50,12 +54,23 @@ class  Perceptron {
                     for(let k=0;  k< x[j].length; k++){
                         console.log("Antes del ajuste: w: %f, lr: %f, error: %d", this.w[k+1], this.learningRate, this.error);
                         this.w[k+1] += this.learningRate * this.error * x[j][k];
-                        console.log("Despues: w: %f ", this.w[k+1]);
+                        console.log("Despues: w: %f ", this.w[k+1]);                        
                     }
-                    
+                    x2[0] = this.calcularX2(-5);
+                    x2[1] = this.calcularX2(5);
+                    console.log("x2: ", x2);
+                 
+                    this.estado.clearCanvas();
+                    this.estado.drawAxis();
+                    x.forEach ((point, index) => {
+                        this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), y[index])    
+                    })
+                    //perceptronState.cpDrawer.drawPoint();
+                    this.estado.drawLine(-5,x2[0],5,x2[1])
+                    await new Promise(r => setTimeout(r, 500));
                 }
             }
-            this.errorAcumulado.push({epoca: "Ep "+ parseInt(epoca + 1), error: sumaError});
+            this.errorAcumulado.push({epoca: ""+ parseInt(epoca + 1), error: sumaError});
             epoca += 1;   
             sumaError = 0;
             if(epoca >=this.iterations){
@@ -65,6 +80,10 @@ class  Perceptron {
 
     }
 
+    calcularX2 = (x1) =>{
+        return  ((-this.w[1] *  x1) + this.w[0] )/ this.w[2];
+    }
+    
     predict = (inputs) => {
             let suma = this.w[0];         
             for(var i = 0; i < inputs.length; i++){

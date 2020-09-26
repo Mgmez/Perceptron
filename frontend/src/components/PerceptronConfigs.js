@@ -20,12 +20,18 @@ const PerceptronConfigs = (props) =>  {
     
     const iniciarPesos = async (values) =>{        
         console.log(values);
+        const perceptron = new Perceptron(perceptronState.x.length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
         setPerceptronState( {
-            perceptron: new Perceptron(perceptronState.x.length, values.learning_rate, values.max_epic_number),
-            entrenado: false ,
-            x : perceptronState.x,
-            y : perceptronState.y
-        });
+            ...perceptronState,
+            perceptron,
+        
+        });       
+        const x2 = []; 
+        x2[0] = perceptron.calcularX2(-5);
+        x2[1] = perceptron.calcularX2(5);
+        console.log("x2: ", x2);
+        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1] );
+
       }
       const entrenar = () =>{                
         perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
