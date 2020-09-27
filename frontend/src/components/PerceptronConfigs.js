@@ -36,18 +36,22 @@ const PerceptronConfigs = (props) =>  {
       const entrenar = () =>{                
         perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
-            perceptron: perceptronState.perceptron,
-            entrenado: true,
-            x : perceptronState.x,
-            y : perceptronState.y
+            ...perceptronState,
+            entrenado: true            
         });           
         console.log(perceptronState.perceptron.w);
       }
-      const probar = () =>{
-      
-        const x = [1, 0, 1];
-     //   const xd = perceptronState.perceptron.predict(x);
-       
+      const reiniciar = () =>{
+          perceptronState.cpDrawer.clearCanvas();
+          perceptronState.cpDrawer.drawAxis();
+        setPerceptronState( {
+            ...perceptronState,
+            perceptron : null,
+            entrenado: false,
+            x : [],
+            y : [],                                    
+        });          
+               
         
         
       }
@@ -93,6 +97,9 @@ const PerceptronConfigs = (props) =>  {
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Perceptrón</Button>
         </Form>
         
+        <Form onSubmit={handleSubmit(reiniciar)} className="">                        
+            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Reiniciar</Button>
+        </Form>
 
     </>
 }
