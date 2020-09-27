@@ -13,6 +13,7 @@ function App() {
     entrenado: false,
     x : [],
     y : [],
+    test : [],
     cpDrawer: null,
     pesoModificado: false
   });

@@ -67,7 +67,7 @@ class  Perceptron {
                     })
                     //perceptronState.cpDrawer.drawPoint();
                     this.estado.drawLine(-5,x2[0],5,x2[1])
-                    await new Promise(r => setTimeout(r, 500));
+                    await new Promise(r => setTimeout(r, 100));
                 }
             }
             this.errorAcumulado.push({epoca: ""+ parseInt(epoca + 1), error: sumaError});

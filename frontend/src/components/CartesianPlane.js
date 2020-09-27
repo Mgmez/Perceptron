@@ -25,7 +25,7 @@ const CartesianPlane = (props) => {
     
     const handleClick = (event) => {
         event.preventDefault();
-        
+        const entrenado = perceptronState.entrenado;
         const canvas = canvasRef.current,
             rect = canvas.getBoundingClientRect(),
             physicalXCoordinate = event.clientX - rect.left,
@@ -34,23 +34,35 @@ const CartesianPlane = (props) => {
             logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),
             value = event.type === "click" ? 1 : 0;
 
-        cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);
-
-        setPerceptronState({
-            ...perceptronState,
-            x: [
-                ...perceptronState.x,
-                [
-                    logicalXCoordinate,
-                    logicalYCoordinate,
-                    Math.random() * (5 - (-5)) + (-5)
+        if(!entrenado){
+            cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);
+            setPerceptronState({            
+                ...perceptronState,
+                x: [
+                    ...perceptronState.x,
+                    [
+                        logicalXCoordinate,
+                        logicalYCoordinate,
+                        Math.random() * (5 - (-5)) + (-5)
+                    ]
+                ],
+                y: [
+                    ...perceptronState.y,
+                    value
                 ]
-            ],
-            y: [
-                ...perceptronState.y,
-                event.type === "click" ? 1 : 0                
-            ]
-        });
+            });
+        }else{
+            cpDrawer.drawPoint(
+                physicalXCoordinate, 
+                physicalYCoordinate, 
+                perceptronState.perceptron.predict([
+                    logicalXCoordinate, 
+                    logicalYCoordinate, 
+                    Math.random() * (5 - (-5)) + (-5)]));
+        }
+        
+
+        
     }
 
     return <>
