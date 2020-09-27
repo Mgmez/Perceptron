@@ -11,7 +11,7 @@ class  Perceptron {
 
 		this.w  = [];
 		this.learningRate= parseFloat(lr) || 0.01;
-        this.iterations =  it || 10;
+        this.iterations =  parseFloat(it) || 10;
         this.error = 0;
         this.errorAcumulado = [];
         this.recta = [];

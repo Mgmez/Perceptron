@@ -33,11 +33,13 @@ class CPDrawer {
     drawAxis() {
         const ctx = this.canvas.getContext("2d"),
             cty = this.canvas.getContext("2d");
-            
+        
+        ctx.beginPath();
         ctx.moveTo(this.widthCanvas/2,0);
         ctx.lineTo(this.widthCanvas/2,this.heightCanvas);
         ctx.stroke();
 
+        cty.beginPath();
         cty.moveTo(0,this.heightCanvas/2);
         cty.lineTo(this.widthCanvas,this.heightCanvas/2);
         cty.stroke();
@@ -79,6 +81,7 @@ class CPDrawer {
         
         context.strokeStyle = color;
 
+        context.beginPath();
         context.moveTo(x1,y1);
         context.lineTo(x2,y2);
         context.stroke();
