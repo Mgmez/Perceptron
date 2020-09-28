@@ -59,21 +59,19 @@ const PerceptronConfigs = (props) =>  {
             entrenado: true            
         });           
         console.log(perceptronState.perceptron.w);
-      }
-      const reiniciar = () =>{
-          perceptronState.cpDrawer.clearCanvas();
-          perceptronState.cpDrawer.drawAxis();
+    }
+
+    const reiniciar = () =>{
+        perceptronState.cpDrawer.clearCanvas();
+        perceptronState.cpDrawer.drawAxis();
         setPerceptronState( {
             ...perceptronState,
             perceptron : null,
             entrenado: false,
             x : [],
             y : [],                                    
-        });          
-               
-        
-        
-      }
+        });           
+    }
       
   
 

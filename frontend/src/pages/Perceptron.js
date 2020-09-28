@@ -35,15 +35,22 @@ const Perceptron = (props) => {
                 </Col>
             </Row>
             {
-                perceptronState.entrenado &&
+                perceptronState.entrenado && 
                 <Row>
                     <Col sm={{span: 12}}>
                         <div className="card card--box">
                             <div className="card__header">
                                 Grafica
                             </div>
-                            <div style={{ width: '100%', height: 400 }}>
-                                <ErrorChart />
+                            <div style={{ width: '100%', height: 500, paddingBottom: '11%'}}>
+                                {
+                                    perceptronState.perceptron.errorAcumulado != 0 && 
+                                    <ErrorChart />
+                                }
+                                {
+                                    perceptronState.perceptron.errorAcumulado == 0 && 
+                                    <span>No hay información para mostrar</span>
+                                }
                             </div>
                         </div>
                     </Col>

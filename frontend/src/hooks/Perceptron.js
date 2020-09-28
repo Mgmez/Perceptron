@@ -64,7 +64,7 @@ class  Perceptron {
                     await new Promise(r => setTimeout(r, 30));
                 }
             }
-            this.errorAcumulado.push({epoca: ""+ parseInt(epoca + 1), error: sumaError});
+            this.errorAcumulado.push({epoca: "Ep "+ parseInt(epoca + 1), error: sumaError});
             epoca += 1;   
             sumaError = 0;
             if(epoca >=this.iterations){
