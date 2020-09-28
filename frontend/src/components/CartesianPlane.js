@@ -42,7 +42,7 @@ const CartesianPlane = (props) => {
                     ...perceptronState.x,
                     [
                         logicalXCoordinate,
-                        logicalYCoordinate                        
+                        logicalYCoordinate
                     ]
                 ],
                 y: [
@@ -56,7 +56,7 @@ const CartesianPlane = (props) => {
                 physicalYCoordinate, 
                 perceptronState.perceptron.predict([
                     logicalXCoordinate, 
-                    logicalYCoordinate                    
+                    logicalYCoordinate                                        
                 ]));
         }
         
