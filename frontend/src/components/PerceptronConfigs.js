@@ -40,7 +40,7 @@ const PerceptronConfigs = (props) =>  {
         x2[0] = perceptron.calcularX2(-5);
         x2[1] = perceptron.calcularX2(5);
         console.log("x2: ", x2);
-        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#00FF00");
+        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1]);
 
       }
       const entrenar = () =>{     
@@ -48,7 +48,7 @@ const PerceptronConfigs = (props) =>  {
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
                 "trainedPerceptron": {
-                    message: "Primero entrene el perceptron"
+                    message: "Primero inicialice el perceptron"
                 }
             });
             return;
@@ -123,7 +123,7 @@ const PerceptronConfigs = (props) =>  {
             
         </Form>
         <Form onSubmit={handleSubmit(entrenar)} className="">                        
-            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Perceptrón</Button>
+            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Entrenar</Button>
         </Form>
         
         <Form onSubmit={handleSubmit(reiniciar)} className="">                        
