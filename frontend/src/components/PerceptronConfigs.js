@@ -32,29 +32,28 @@ const PerceptronConfigs = (props) =>  {
         console.log("x2: ", x2);
         perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1] );
 
-      }
-      const entrenar = () =>{                
+    }
+
+    const entrenar = () =>{                
         perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
             ...perceptronState,
             entrenado: true            
         });           
         console.log(perceptronState.perceptron.w);
-      }
-      const reiniciar = () =>{
-          perceptronState.cpDrawer.clearCanvas();
-          perceptronState.cpDrawer.drawAxis();
+    }
+
+    const reiniciar = () =>{
+        perceptronState.cpDrawer.clearCanvas();
+        perceptronState.cpDrawer.drawAxis();
         setPerceptronState( {
             ...perceptronState,
             perceptron : null,
             entrenado: false,
             x : [],
             y : [],                                    
-        });          
-               
-        
-        
-      }
+        });           
+    }
       
   
 
