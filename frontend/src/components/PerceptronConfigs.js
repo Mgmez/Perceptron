@@ -53,7 +53,7 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }           
-        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
+        await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
             ...perceptronState,
             entrenado: true            
