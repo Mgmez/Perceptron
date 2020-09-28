@@ -52,33 +52,26 @@ const PerceptronConfigs = (props) =>  {
                 }
             });
             return;
-        }  
-        
-        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);            
-        //await new Promise(r => setTimeout(r, 100));
-        await setPerceptronState( {
-        ...perceptronState,
-        entrenado: true            
-        }) ;
-            
-        
-        
-      }
+        }           
+        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
+        setPerceptronState( {
+            ...perceptronState,
+            entrenado: true            
+        });           
+        console.log(perceptronState.perceptron.w);
+    }
 
-      const reiniciar = () =>{
-          perceptronState.cpDrawer.clearCanvas();
-          perceptronState.cpDrawer.drawAxis();
+    const reiniciar = () =>{
+        perceptronState.cpDrawer.clearCanvas();
+        perceptronState.cpDrawer.drawAxis();
         setPerceptronState( {
             ...perceptronState,
             perceptron : null,
             entrenado: false,
             x : [],
             y : [],                                    
-        });          
-               
-        
-        
-      }
+        });           
+    }
       
   
 
