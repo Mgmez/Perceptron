@@ -62,6 +62,8 @@ class  Perceptron {
                     })                    
                     this.estado.drawLine(-5,x2[0],5,x2[1], "#0101DF")
                     await new Promise(r => setTimeout(r, 30));
+                    
+                    
                 }
             }
             this.errorAcumulado.push({epoca: ""+ parseInt(epoca + 1), error: sumaError});
@@ -71,6 +73,8 @@ class  Perceptron {
                 break;
             }
         }
+
+        return true;
 
     }
 
@@ -90,6 +94,7 @@ class  Perceptron {
         }
       
 
-    
+        
+          
 }
 export default Perceptron;

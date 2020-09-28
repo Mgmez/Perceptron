@@ -43,7 +43,7 @@ const PerceptronConfigs = (props) =>  {
         perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
 
       }
-      const entrenar = () =>{     
+      const entrenar = async () =>{     
         setPerceptronErrors({});
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
@@ -52,14 +52,19 @@ const PerceptronConfigs = (props) =>  {
                 }
             });
             return;
-        }           
-        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
-        setPerceptronState( {
-            ...perceptronState,
-            entrenado: true            
-        });           
-        console.log(perceptronState.perceptron.w);
+        }  
+        
+        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);            
+        //await new Promise(r => setTimeout(r, 100));
+        await setPerceptronState( {
+        ...perceptronState,
+        entrenado: true            
+        }) ;
+            
+        
+        
       }
+
       const reiniciar = () =>{
           perceptronState.cpDrawer.clearCanvas();
           perceptronState.cpDrawer.drawAxis();

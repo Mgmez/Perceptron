@@ -5,11 +5,12 @@ import CartesianPlane from '../components/CartesianPlane';
 import PerceptronConfigs from '../components/PerceptronConfigs';
 import ErrorChart from '../components/ErrorChart';
 import { PerceptronContext } from "../components/PerceptronContext";
-
+import Alert from '../components/Alert.js';
 const Perceptron = (props) => {
     const {perceptronState} = useContext(PerceptronContext); 
     return <>
         <Container fluid>
+            
             <Row>
                 <Col
                     md={{span: 7}}
@@ -30,10 +31,27 @@ const Perceptron = (props) => {
                         <div className="card__header">
                             Configuraciones
                         </div>
-                        <PerceptronConfigs />
+                        <PerceptronConfigs />                       
                     </div>
+                    {  
+                        perceptronState.entrenado &&         
+                        <Row>
+                            <Col
+                                md={{span: 12}}
+                                sm={{span: 5}}
+                                >
+                                <div className="card card--box">
+                                    
+                                    <div style={{ width: '100%', height: 70 }}>
+                                        <Alert />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>                                                            
+                    }
                 </Col>
             </Row>
+           
             {
                 perceptronState.entrenado &&
                 <Row>
