@@ -16,7 +16,6 @@ const ErrorChart = (props) =>  {
       setInfoGrouped(groupElements(perceptronState.perceptron.errorAcumulado));
       let firstDataToShow = groupElements(perceptronState.perceptron.errorAcumulado);
       setDataToShow(firstDataToShow[itemsViewed].data);
-      console.log("errores", perceptronState.perceptron.errorAcumulado)
     }, [])
 
     /*const getHarcodedInfo = () => {

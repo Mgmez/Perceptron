@@ -17,10 +17,20 @@ const PerceptronConfigs = (props) =>  {
     //const [entrenado, setEntrenado] = useState(false);    
     const { handleSubmit, register, errors, control } = useForm();
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
+    const [perceptronErrors, setPerceptronErrors] = useState({});
     
-    const iniciarPesos = async (values) =>{        
+    const iniciarPesos = async (values) =>{
         console.log(values);
-        const perceptron = new Perceptron(perceptronState.x.length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
+        setPerceptronErrors({});
+        if (!perceptronState?.x?.length) {
+            setPerceptronErrors({
+                trainingSet: {
+                    message: "Agregue datos de entrenamiento"
+                }
+            });
+            return;
+        }
+        const perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
         setPerceptronState( {
             ...perceptronState,
             perceptron,
@@ -30,11 +40,19 @@ const PerceptronConfigs = (props) =>  {
         x2[0] = perceptron.calcularX2(-5);
         x2[1] = perceptron.calcularX2(5);
         console.log("x2: ", x2);
-        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1] );
+        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
 
-    }
-
-    const entrenar = () =>{                
+      }
+      const entrenar = () =>{     
+        setPerceptronErrors({});
+        if (!perceptronState.perceptron) {
+            setPerceptronErrors({
+                "trainedPerceptron": {
+                    message: "Primero inicialice el perceptron"
+                }
+            });
+            return;
+        }           
         perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
             ...perceptronState,
@@ -72,10 +90,12 @@ const PerceptronConfigs = (props) =>  {
                 }}
                 helperText={errors?.learning_rate?.message}
                 error={!!errors?.learning_rate}
+                defaultValue = {0.01}
                 margin="normal"
                 fullWidth
             />
             <Controller
+                defaultValue ={1000}
                 as={TextField}
                 name="max_epic_number"
                 control={control}
@@ -88,12 +108,22 @@ const PerceptronConfigs = (props) =>  {
                 margin="normal"
                 fullWidth
             />
+
+            {
+                perceptronErrors.trainingSet &&
+                <span className="error">{perceptronErrors.trainingSet.message}</span>
+            }
+
+            {
+                perceptronErrors.trainedPerceptron &&
+                <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
+            }
             
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>
             
         </Form>
         <Form onSubmit={handleSubmit(entrenar)} className="">                        
-            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Perceptrón</Button>
+            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Entrenar</Button>
         </Form>
         
         <Form onSubmit={handleSubmit(reiniciar)} className="">                        
