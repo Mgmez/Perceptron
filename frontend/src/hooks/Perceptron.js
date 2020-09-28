@@ -59,6 +59,7 @@ class  Perceptron {
                     x2[0] = this.calcularX2(-5);
                     x2[1] = this.calcularX2(5);
                     console.log("x2: ", x2);
+                    console.log("w: ", this.w);
                  
                     this.estado.clearCanvas();
                     this.estado.drawAxis();
@@ -85,7 +86,7 @@ class  Perceptron {
     }
     
     predict = (inputs) => {
-            let suma = this.w[0];         
+            let suma = -this.w[0];         
             for(var i = 0; i < inputs.length; i++){
                 suma += this.w[i+1] * inputs[i];               
             }

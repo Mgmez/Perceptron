@@ -78,6 +78,7 @@ class CPDrawer {
         y2 = this.YC(y2);
         
         const context = this.canvas.getContext("2d");
+        context.save();
         
         context.strokeStyle = color;
 
@@ -85,6 +86,7 @@ class CPDrawer {
         context.moveTo(x1,y1);
         context.lineTo(x2,y2);
         context.stroke();
+        context.restore();
     }
 
     clearCanvas() {
