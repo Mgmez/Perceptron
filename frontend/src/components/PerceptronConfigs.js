@@ -54,9 +54,12 @@ const PerceptronConfigs = (props) =>  {
             return;
         }           
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
+        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;
+        console.log("limite; ",xd);
         setPerceptronState( {
             ...perceptronState,
-            entrenado: true            
+            entrenado: true,
+            limiteAlcanzado: xd
         });           
         console.log(perceptronState.perceptron.w);
     }

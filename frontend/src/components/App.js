@@ -13,7 +13,8 @@ function App() {
     entrenado: false,
     x : [],
     y : [],    
-    cpDrawer: null
+    cpDrawer: null,
+    limiteAlcanzado: false
   });
 
  

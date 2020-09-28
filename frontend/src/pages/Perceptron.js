@@ -42,7 +42,7 @@ const Perceptron = (props) => {
                                 >
                                 <div className="card card--box">
                                     
-                                    <div style={{ width: '100%', height: 70 }}>
+                                    <div style={{ width: '100%', height: 75 }}>
                                         <Alert />
                                     </div>
                                 </div>
