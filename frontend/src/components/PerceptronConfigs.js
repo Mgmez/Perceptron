@@ -30,7 +30,7 @@ const PerceptronConfigs = (props) =>  {
         x2[0] = perceptron.calcularX2(-5);
         x2[1] = perceptron.calcularX2(5);
         console.log("x2: ", x2);
-        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1] );
+        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
 
       }
       const entrenar = () =>{                
@@ -73,10 +73,12 @@ const PerceptronConfigs = (props) =>  {
                 }}
                 helperText={errors?.learning_rate?.message}
                 error={!!errors?.learning_rate}
+                defaultValue = {0.01}
                 margin="normal"
                 fullWidth
             />
             <Controller
+                defaultValue ={1000}
                 as={TextField}
                 name="max_epic_number"
                 control={control}
