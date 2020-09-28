@@ -43,7 +43,7 @@ const PerceptronConfigs = (props) =>  {
         perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
 
       }
-      const entrenar = () =>{     
+      const entrenar = async () =>{     
         setPerceptronErrors({});
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
@@ -53,7 +53,7 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }           
-        perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
+        await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
         setPerceptronState( {
             ...perceptronState,
             entrenado: true            
