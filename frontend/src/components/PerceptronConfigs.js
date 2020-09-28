@@ -113,12 +113,12 @@ const PerceptronConfigs = (props) =>  {
 
             {
                 perceptronErrors.trainingSet &&
-                <span>{perceptronErrors.trainingSet.message}</span>
+                <span className="error">{perceptronErrors.trainingSet.message}</span>
             }
 
             {
                 perceptronErrors.trainedPerceptron &&
-                <span>{perceptronErrors.trainedPerceptron.message}</span>
+                <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
             }
             
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>

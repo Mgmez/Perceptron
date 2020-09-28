@@ -69,6 +69,9 @@ svg#clouds {
   flex-direction: column !important;
   margin-bottom: 4rem !important;
 }
+.error {
+  color: #FF0000;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
