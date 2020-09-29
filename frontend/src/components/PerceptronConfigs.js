@@ -2,17 +2,26 @@ import React,{useContext, useState} from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Form } from 'react-bootstrap';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
 import Perceptron from '../hooks/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
 
+const perceptronTypes = [
+    {
+        label: "Perceptron",
+        value: "perceptron"
+    },
+    {
+        label: "Adaline",
+        value: "adaline"
+    },
+    {
+        label: "Ambos",
+        value: "both"
+    }
+]
 
-
-
-
-const PerceptronConfigs = (props) =>  {
-
-    
+const PerceptronConfigs = (props) =>  {    
     //const [perceptron, setPerceptron] = useState(null);
     //const [entrenado, setEntrenado] = useState(false);    
     const { handleSubmit, register, errors, control } = useForm();
@@ -121,6 +130,40 @@ const PerceptronConfigs = (props) =>  {
                 perceptronErrors.trainedPerceptron &&
                 <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
             }
+
+            <Controller
+                defaultValue ={"perceptron"}
+                as={RadioGroup}
+                name="type"
+                control={control}
+                id="type"
+                name="type"
+                rules={{ required: "Este campo es requerido" }}
+                helperText={errors?.type?.message}
+                error={!!errors?.type}
+                margin="normal"
+                fullWidth
+            >
+                {
+                    perceptronTypes.map((type, index) => 
+                        <FormControlLabel
+                            value={type.value}
+                            key={index}
+                            control={
+                                <Radio
+                                    size="small"
+                                    style={{ color: "#03a9f4" }}
+                                />
+                            }
+                            label={
+                                <span style={{ fontSize: "12pt" }}>
+                                    {type.label}
+                                </span>
+                            }
+                        />
+                    )
+                }
+            </Controller>
             
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>
             
