@@ -54,7 +54,7 @@ const CartesianPlane = (props) => {
             cpDrawer.drawPoint(
                 physicalXCoordinate, 
                 physicalYCoordinate, 
-                perceptronState.perceptron.predict([
+                perceptronState.perceptron.predict2([
                     logicalXCoordinate, 
                     logicalYCoordinate                                        
                 ]));

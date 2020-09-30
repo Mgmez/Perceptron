@@ -5,6 +5,8 @@ import { Form } from 'react-bootstrap';
 import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
 import Perceptron from '../hooks/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
+import Adaline from '../algoritmos/Adaline.js';
+
 
 const perceptronTypes = [
     {
@@ -22,8 +24,7 @@ const perceptronTypes = [
 ]
 
 const PerceptronConfigs = (props) =>  {    
-    //const [perceptron, setPerceptron] = useState(null);
-    //const [entrenado, setEntrenado] = useState(false);    
+     
     const { handleSubmit, register, errors, control } = useForm();
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
@@ -39,7 +40,13 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }
-        const perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
+        //const perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
+        const perceptron = new Adaline(
+            perceptronState.x[0].length,             
+            values.max_epic_number,
+            values.learning_rate,
+            perceptronState.cpDrawer);
+
         setPerceptronState( {
             ...perceptronState,
             perceptron,
@@ -63,8 +70,7 @@ const PerceptronConfigs = (props) =>  {
             return;
         }           
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
-        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;
-        console.log("limite; ",xd);
+        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;      
         setPerceptronState( {
             ...perceptronState,
             entrenado: true,
@@ -102,12 +108,12 @@ const PerceptronConfigs = (props) =>  {
                 }}
                 helperText={errors?.learning_rate?.message}
                 error={!!errors?.learning_rate}
-                defaultValue = {0.01}
+                defaultValue = {0.1}
                 margin="normal"
                 fullWidth
             />
             <Controller
-                defaultValue ={1000}
+                defaultValue ={50}
                 as={TextField}
                 name="max_epic_number"
                 control={control}
