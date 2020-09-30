@@ -1,6 +1,6 @@
 import React,{useContext, useState} from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Form } from 'react-bootstrap';
+import { Form, FormControl } from 'react-bootstrap';
 
 import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
 import Perceptron from '../hooks/Perceptron.js';
@@ -24,10 +24,18 @@ const perceptronTypes = [
 ]
 
 const PerceptronConfigs = (props) =>  {    
+<<<<<<< HEAD
      
     const { handleSubmit, register, errors, control } = useForm();
+=======
+    //const [perceptron, setPerceptron] = useState(null);
+    //const [entrenado, setEntrenado] = useState(false);    
+    const { handleSubmit, register, errors, control, watch } = useForm();
+>>>>>>> b6206d2769305bad1601a23a0a8aa2a171c7d1a4
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
+
+    const type = watch("type");
     
     const iniciarPesos = async (values) =>{
         console.log(values);
@@ -110,8 +118,8 @@ const PerceptronConfigs = (props) =>  {
                 error={!!errors?.learning_rate}
                 defaultValue = {0.1}
                 margin="normal"
-                fullWidth
             />
+            <br />
             <Controller
                 defaultValue ={50}
                 as={TextField}
@@ -124,19 +132,25 @@ const PerceptronConfigs = (props) =>  {
                 helperText={errors?.max_epic_number?.message}
                 error={!!errors?.max_epic_number}
                 margin="normal"
-                fullWidth
             />
-
+            <br />
             {
-                perceptronErrors.trainingSet &&
-                <span className="error">{perceptronErrors.trainingSet.message}</span>
+                (type === "adaline" || type === "both") &&
+                <Controller
+                    defaultValue ={0.01}
+                    as={TextField}
+                    name="max_error"
+                    control={control}
+                    id="max_error"
+                    name="max_error"
+                    label="Error"
+                    rules={{ required: "Este campo es requerido" }}
+                    helperText={errors?.max_error?.message}
+                    error={!!errors?.max_error}
+                    margin="normal"
+                />
             }
-
-            {
-                perceptronErrors.trainedPerceptron &&
-                <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
-            }
-
+           
             <Controller
                 defaultValue ={"perceptron"}
                 as={RadioGroup}
@@ -148,7 +162,6 @@ const PerceptronConfigs = (props) =>  {
                 helperText={errors?.type?.message}
                 error={!!errors?.type}
                 margin="normal"
-                fullWidth
             >
                 {
                     perceptronTypes.map((type, index) => 
@@ -170,6 +183,19 @@ const PerceptronConfigs = (props) =>  {
                     )
                 }
             </Controller>
+            <br />
+
+        
+
+            {
+                perceptronErrors.trainingSet &&
+                <span className="error">{perceptronErrors.trainingSet.message}</span>
+            }
+
+            {
+                perceptronErrors.trainedPerceptron &&
+                <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
+            }
             
             <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>
             
