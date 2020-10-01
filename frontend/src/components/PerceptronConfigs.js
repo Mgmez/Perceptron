@@ -6,6 +6,7 @@ import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@materia
 import Perceptron from '../hooks/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
 import Adaline from '../algoritmos/Adaline.js';
+import Both from "../algoritmos/Both.js"
 
 
 const perceptronTypes = [
@@ -17,21 +18,16 @@ const perceptronTypes = [
         label: "Adaline",
         value: "adaline"
     },
-    {
+    /*{
         label: "Ambos",
         value: "both"
-    }
+    }*/
 ]
 
 const PerceptronConfigs = (props) =>  {    
-<<<<<<< HEAD
-     
-    const { handleSubmit, register, errors, control } = useForm();
-=======
     //const [perceptron, setPerceptron] = useState(null);
     //const [entrenado, setEntrenado] = useState(false);    
     const { handleSubmit, register, errors, control, watch } = useForm();
->>>>>>> b6206d2769305bad1601a23a0a8aa2a171c7d1a4
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
 
@@ -39,6 +35,7 @@ const PerceptronConfigs = (props) =>  {
     
     const iniciarPesos = async (values) =>{
         console.log(values);
+        let perceptron;
         setPerceptronErrors({});
         if (!perceptronState?.x?.length) {
             setPerceptronErrors({
@@ -48,12 +45,38 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }
-        //const perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
-        const perceptron = new Adaline(
-            perceptronState.x[0].length,             
-            values.max_epic_number,
-            values.learning_rate,
-            perceptronState.cpDrawer);
+        switch(type) {
+            case "perceptron":
+                perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
+                break;
+            case "adaline":
+                perceptron = new Adaline(
+                    perceptronState.x[0].length,             
+                    values.max_epic_number,
+                    values.max_error,
+                    values.learning_rate,
+                    perceptronState.cpDrawer
+                );
+                break;
+            case "both":
+                console.log("Ambos")
+                perceptron = new Both(
+                    perceptronState.x[0].length,             
+                    values.max_epic_number,
+                    values.max_error,
+                    values.learning_rate,
+                    perceptronState.cpDrawer
+                );
+                break;
+            default:
+                perceptron = new Adaline(
+                    perceptronState.x[0].length,             
+                    values.max_epic_number,
+                    values.max_error,
+                    values.learning_rate,
+                    perceptronState.cpDrawer
+                );
+        }
 
         setPerceptronState( {
             ...perceptronState,
@@ -64,6 +87,16 @@ const PerceptronConfigs = (props) =>  {
         x2[0] = perceptron.calcularX2(-5);
         x2[1] = perceptron.calcularX2(5);
         console.log("x2: ", x2);
+        perceptronState.cpDrawer.clearCanvas();
+        perceptronState.cpDrawer.drawAxis();
+        perceptronState.x.forEach ((point, index) => {
+            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+                perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+                perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+        });          
+        perceptronState.cpDrawer.drawLine(-5,x2[0],5,x2[1], "#FF0040")
         perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
 
       }

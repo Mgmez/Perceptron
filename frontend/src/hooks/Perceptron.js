@@ -67,7 +67,7 @@ class  Perceptron {
                 }
             }
             this.errorAcumulado.push({epoca: "Ep "+ parseInt(epoca + 1), error: sumaError});
-            epoca += 1;   
+            epoca += 1;
             sumaError = 0;
             if(epoca >=this.iterations){
                 break;
