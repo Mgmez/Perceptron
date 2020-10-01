@@ -90,14 +90,15 @@ const PerceptronConfigs = (props) =>  {
         perceptronState.cpDrawer.clearCanvas();
         perceptronState.cpDrawer.drawAxis();
         perceptronState.x.forEach ((point, index) => {
-            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
-                perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
-            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
-                perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
-            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])    
+            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])             
         });          
-        perceptronState.cpDrawer.drawLine(-5,x2[0],5,x2[1], "#FF0040")
-        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
+        if(type === 'adaline'){
+            perceptronState.cpDrawer.drawLine(-5,x2[0],5,x2[1], "#FF0040");
+        }else{
+            perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
+        }
+        
+        
 
       }
       const entrenar = async () =>{     

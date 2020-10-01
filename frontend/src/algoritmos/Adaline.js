@@ -24,7 +24,7 @@ class Adaline {
             console.log("Epoca: ", epoca+1);
             for(var j = 0; j<inputs.length; j++){
                 //const d = outputs[j]  >= 0 ? 0.5 : -0.5;    
-                y = this.predict(inputs[j]);
+                y = this.transferencia(inputs[j]);
                 errorLineal = outputs[j] - this.f(y);
                 errorCuadratico =  Math.pow(errorLineal,2);
                 sumaError += errorCuadratico; 
@@ -39,11 +39,7 @@ class Adaline {
             this.estado.clearCanvas();
             this.estado.drawAxis();
             inputs.forEach ((point, index) => {
-                this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])    
-                    this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])    
-                this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])    
-                    this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])    
-                this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])    
+                this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])                  
             });          
             this.estado.drawLine(-5,x2[0],5,x2[1], "#FF0040")
             await new Promise(r => setTimeout(r, 30));                                       
@@ -71,7 +67,7 @@ class Adaline {
         return  ((-this.w[1] *  x1) + this.w[0] )/ this.w[2];
     }
     
-        predict = (inputs) => {
+        transferencia = (inputs) => {
             let suma = -this.w[0];         
             for(var i = 0; i < inputs.length; i++){
                 suma += this.w[i+1] * inputs[i];               
@@ -82,7 +78,7 @@ class Adaline {
             
         }
         //Para las clases una vez este entrenado 
-        predict2 = (inputs) => {
+        predict = (inputs) => {
             let suma = -this.w[0];         
             for(var i = 0; i < inputs.length; i++){
                 suma += this.w[i+1] * inputs[i];               
