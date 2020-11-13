@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Form, FormControl } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
-import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { Button, FormControlLabel, Radio, RadioGroup, TextField, FormLabel,FormControl} from '@material-ui/core';
 import Perceptron from '../hooks/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
 import Adaline from '../algoritmos/Adaline.js';
-import Both from "../algoritmos/Both.js"
+
 
 
 const numCapas = [
@@ -19,21 +19,7 @@ const numCapas = [
         value: "doscapas"
     }
 ]
-const clases = [
-    {
-        label: "clase1",
-        color: "#FF0000"
-    },
-    {
-        label: "clase2",
-        color: "#0101DF"
-    },
-    {
-        label: "clase3",
-        color: "#FFFF00"
-    }
-
-]
+let clases = [];
 
 const PerceptronConfigs = (props) => {
     //const [perceptron, setPerceptron] = useState(null);
@@ -41,9 +27,69 @@ const PerceptronConfigs = (props) => {
     const { handleSubmit, register, errors, control, watch } = useForm();
     const { perceptronState, setPerceptronState } = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
-    const [initConf, setInitConf] = useState(true);
+    const [iniciado, setIniciado] = useState(false);
+    const [initConf, setInitConf] = useState({});
+    const [claseSelect, setClaseSelect] = useState("1");
 
     const type = watch("type");
+
+    const cambiarClase = (event) => {
+        console.log("cambio clase");
+        console.log(event.target.value);
+        setClaseSelect(event.target.value);
+        setPerceptronState({
+            ...perceptronState,
+           claseSelect: event.target.value
+        });
+    }
+    const iniciar = async (values) => {
+        console.log(values);
+        if (values.type === 'unacapa') {
+            setInitConf({
+                num_class: values.max_class,
+                num_capas: 1,
+                num_n_capa1: values.max_capa1
+            });
+        } else {
+            setInitConf({
+                num_class: values.max_class,
+                num_capas: 2,
+                num_n_capa1: values.max_capa1,
+                num_n_capa2: values.max_capa2
+            });
+        }
+
+        for (let i = 1; i <= values.max_class; i++) {
+            clases.push({
+                label: "clase" + i,
+                color: randomColor(),
+                value: "" + i
+            })
+        }
+        setPerceptronState({
+            ...perceptronState,
+            clases: clases,
+            iniciado: true
+        });
+        setIniciado(true);
+    }
+
+    const randomColor = () => {
+        const hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+        let color_aleatorio = "#";
+        for (let i = 0; i < 6; i++) {
+            let posarray = aleatorio(0, hexadecimal.length);
+            color_aleatorio += hexadecimal[posarray];
+        }
+        return color_aleatorio;
+    }
+
+    const aleatorio = (inferior, superior) => {
+        const numPosibilidades = superior - inferior;
+        let aleat = Math.random() * numPosibilidades
+        aleat = Math.floor(aleat)
+        return parseInt(inferior) + aleat
+    }
 
     const iniciarPesos = async (values) => {
         console.log(values);
@@ -138,7 +184,7 @@ const PerceptronConfigs = (props) => {
     }
 
 
-    if (initConf) {
+    if (iniciado) {
         return (
             <>
                 <Form onSubmit={handleSubmit(iniciarPesos)} className="">
@@ -161,7 +207,7 @@ const PerceptronConfigs = (props) => {
                     />
                     <br />
                     <Controller
-                        defaultValue={50}
+                        defaultValue={100}
                         as={TextField}
                         name="max_epic_number"
                         control={control}
@@ -188,8 +234,34 @@ const PerceptronConfigs = (props) => {
                         error={!!errors?.max_error}
                         margin="normal"
                     />
+                    <p></p>
+                    <FormControl component="fieldset">
+                    <FormLabel component="legend">Clases</FormLabel>
 
-                   
+                        <RadioGroup aria-label="clases" name="clases" value={claseSelect} onChange={cambiarClase}>
+                        {
+                            clases.map((type, index) =>
+                                <FormControlLabel
+                                    value={type.value}
+                                    key={index}
+                                    control={
+                                        <Radio
+                                            size="small"
+                                            style={{ color: type.color }}
+                                        />
+                                    }
+                                    label={
+                                        <span style={{ fontSize: "12pt" }}>
+                                            {type.label}
+                                        </span>
+                                    }
+                                />
+                            )
+                        }
+                    
+                        </RadioGroup>
+                    </FormControl>
+
                     {
                         perceptronErrors.trainingSet &&
                         <span className="error">{perceptronErrors.trainingSet.message}</span>
@@ -215,11 +287,11 @@ const PerceptronConfigs = (props) => {
     } else {
         return (
             <>
-                <Form onSubmit={handleSubmit(() => setInitConf(true))} className="">
+                <Form onSubmit={handleSubmit(iniciar)} className="">
                     <Controller
                         defaultValue={3}
                         as={TextField}
-                        name="max_error"
+                        name="max_class"
                         control={control}
                         id="max_class"
                         name="max_class"
@@ -229,7 +301,7 @@ const PerceptronConfigs = (props) => {
                         error={!!errors?.max_error}
                         margin="normal"
                     />
-                    
+
                     <p></p>
                     <span className="">{"Numero de capas ocultas"}</span>
                     <Controller
@@ -238,7 +310,7 @@ const PerceptronConfigs = (props) => {
                         name="type"
                         control={control}
                         id="type"
-                        name="type"                    
+                        name="type"
                         rules={{ required: "Este campo es requerido" }}
                         helperText={errors?.type?.message}
                         error={!!errors?.type}
@@ -264,8 +336,8 @@ const PerceptronConfigs = (props) => {
                             )
                         }
                     </Controller>
-                    
-                    
+
+
                     <Controller
                         defaultValue={5}
                         as={TextField}
@@ -280,22 +352,22 @@ const PerceptronConfigs = (props) => {
                         margin="normal"
                     />
 
-                    
+
                     {
                         type == 'doscapas' &&
                         <Controller
-                        defaultValue={5}
-                        as={TextField}
-                        name="max_capa2"
-                        control={control}
-                        id="max_capa2"
-                        name="max_capa2"
-                        label="Neuronas en la capa 2"
-                        rules={{ required: "Este campo es requerido" }}
-                        helperText={errors?.max_error?.message}
-                        error={!!errors?.max_error}
-                        margin="normal"
-                    />
+                            defaultValue={5}
+                            as={TextField}
+                            name="max_capa2"
+                            control={control}
+                            id="max_capa2"
+                            name="max_capa2"
+                            label="Neuronas en la capa 2"
+                            rules={{ required: "Este campo es requerido" }}
+                            helperText={errors?.max_error?.message}
+                            error={!!errors?.max_error}
+                            margin="normal"
+                        />
 
                     }
 
