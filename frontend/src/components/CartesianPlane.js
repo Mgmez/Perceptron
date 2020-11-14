@@ -12,7 +12,7 @@ const CartesianPlane = (props) => {
     
     useEffect(() => {
         canvasRef.current.style.width = "auto";
-        cpDrawer = new CPDrawer(canvasRef.current)
+        cpDrawer = new CPDrawer(canvasRef.current, perceptronState.clases)
         setPerceptronState({
             ...perceptronState,
             cpDrawer: cpDrawer
@@ -26,13 +26,14 @@ const CartesianPlane = (props) => {
     const handleClick = (event) => {
         event.preventDefault();
         const entrenado = perceptronState.entrenado;
+        const clase = perceptronState.claseSelect;
         const canvas = canvasRef.current,
             rect = canvas.getBoundingClientRect(),
             physicalXCoordinate = event.clientX - rect.left,
             physicalYCoordinate = event.clientY - rect.top,
             logicalXCoordinate = cpDrawer.XL(physicalXCoordinate),
-            logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),
-            value = event.type === "click" ? 1 : 0;
+            logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),    
+            value =  parseInt(clase);
 
         if(!entrenado){
             cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);

@@ -14,7 +14,9 @@ function App() {
     x : [],
     y : [],    
     cpDrawer: null,
-    limiteAlcanzado: false
+    limiteAlcanzado: false, 
+    claseSelect: "1",
+    iniciado: false
   });
 
  

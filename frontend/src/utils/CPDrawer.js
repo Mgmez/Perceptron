@@ -3,10 +3,11 @@ const MAX_Y = 5, MAX_X = 5;
 const MIN_Y = -5, MIN_X = -5;
 
 class CPDrawer {
-    constructor(canvas) {
+    constructor(canvas, clases) {
         this.canvas = canvas;
         this.widthCanvas = canvas.width;
-        this.heightCanvas = canvas.height
+        this.heightCanvas = canvas.height;
+        this.clases = clases;
     }    
     
     
@@ -59,16 +60,18 @@ class CPDrawer {
     drawPoint(x, y, value) {
         const rect = this.canvas.getBoundingClientRect(),
             ctx = this.canvas.getContext("2d");
-
-        if(value === 1){
-            ctx.fillStyle = "#FF0000";
-            ctx.fillRect(x-2,y-2,4,4); //cuadrito
+     
+        ctx.fillStyle = this.clases[value-1].color;
+        ctx.fillRect(x-2,y-2,4,4); //cuadrito
+        
+        /*if(value === 1){
+           
         } else {
-            ctx.fillStyle = "#000000";
+            ctx.fillStyle = "#FF0000";
             ctx.beginPath(); 
             ctx.arc(x-1.25,y-1.25,2.5,0,2*Math.PI);//circulito
             ctx.stroke();
-        }
+        }*/
     }
 
     drawLine(x1, y1, x2, y2, color="#000") {

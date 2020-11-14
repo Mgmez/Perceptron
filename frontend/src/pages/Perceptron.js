@@ -20,7 +20,11 @@ const Perceptron = (props) => {
                         <div className="card__header">
                             Plano cartesiano
                         </div>
-                        <CartesianPlane />
+                        {
+                            perceptronState.iniciado &&
+                            <CartesianPlane />
+                        }                    
+                        
                     </div>
                 </Col>
                 <Col 
