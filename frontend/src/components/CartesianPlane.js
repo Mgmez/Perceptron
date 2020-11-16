@@ -33,7 +33,8 @@ const CartesianPlane = (props) => {
             physicalYCoordinate = event.clientY - rect.top,
             logicalXCoordinate = cpDrawer.XL(physicalXCoordinate),
             logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),    
-            value =  parseInt(clase);
+            value = [];
+            value[parseInt(clase)] = 1;
 
         if(!entrenado){
             cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);

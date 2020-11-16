@@ -6,8 +6,7 @@ import { Button, FormControlLabel, Radio, RadioGroup, TextField, FormLabel,FormC
 import Perceptron from '../hooks/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
 import Adaline from '../algoritmos/Adaline.js';
-
-
+import BackPropagation from '../algoritmos/BackPropagation.js';
 
 const numCapas = [
     {
@@ -47,13 +46,13 @@ const PerceptronConfigs = (props) => {
         if (values.type === 'unacapa') {
             setInitConf({
                 num_class: values.max_class,
-                num_capas: 1,
+                num_capas: 3,
                 num_n_capa1: values.max_capa1
             });
         } else {
             setInitConf({
                 num_class: values.max_class,
-                num_capas: 2,
+                num_capas: 4,
                 num_n_capa1: values.max_capa1,
                 num_n_capa2: values.max_capa2
             });
@@ -103,7 +102,7 @@ const PerceptronConfigs = (props) => {
             });
             return;
         }
-        switch (type) {
+        /*switch (type) {
             case "perceptron":
                 perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
                 break;
@@ -125,27 +124,35 @@ const PerceptronConfigs = (props) => {
                     values.learning_rate,
                     perceptronState.cpDrawer
                 );
+        }*/
+        const neuronsPerLayer = [2, initConf.num_n_capa1];
+        if (initConf.num_capas === 4) {
+            neuronsPerLayer.push(initConf.num_n_capa2);
         }
+        neuronsPerLayer.push(initConf.num_class);
+        const backP = new BackPropagation(
+            initConf.num_capas, neuronsPerLayer, values.learning_rate, values.max_error, values.max_epic_number
+        );
 
         setPerceptronState({
             ...perceptronState,
-            perceptron,
+            perceptron: backP,
 
         });
         const x2 = [];
-        x2[0] = perceptron.calcularX2(-5);
-        x2[1] = perceptron.calcularX2(5);
-        console.log("x2: ", x2);
-        perceptronState.cpDrawer.clearCanvas();
-        perceptronState.cpDrawer.drawAxis();
-        perceptronState.x.forEach((point, index) => {
-            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])
-        });
-        if (type === 'adaline') {
-            perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#FF0040");
-        } else {
-            perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#0101DF");
-        }
+        // x2[0] = perceptron.calcularX2(-5);
+        // x2[1] = perceptron.calcularX2(5);
+        // console.log("x2: ", x2);
+        // perceptronState.cpDrawer.clearCanvas();
+        // perceptronState.cpDrawer.drawAxis();
+        // perceptronState.x.forEach((point, index) => {
+        //     perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])
+        // });
+        // if (type === 'adaline') {
+        //     perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#FF0040");
+        // } else {
+        //     perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#0101DF");
+        // }
 
 
 
