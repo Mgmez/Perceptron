@@ -7,9 +7,9 @@ class AppendingLineChart {
         this.maxY = Number.MIN_VALUE;
         this.lineColors = lineColors;
         this.numLines = lineColors.length;
-        let node = container.node();
-        let totalWidth = node.offsetWidth;
-        let totalHeight = node.offsetHeight;
+        //let node = container.node();
+        let totalWidth = 500;//node.offsetWidth;
+        let totalHeight = 500;//node.offsetHeight;
         let margin = { top: 2, right: 0, bottom: 2, left: 2 };
         let width = totalWidth - margin.left - margin.right;
         let height = totalHeight - margin.top - margin.bottom;
@@ -67,3 +67,5 @@ class AppendingLineChart {
         }
     }
 }
+
+export default AppendingLineChart;

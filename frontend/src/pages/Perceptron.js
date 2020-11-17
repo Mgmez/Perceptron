@@ -1,4 +1,4 @@
-import React, {useContext, useState, Component} from "react";
+import React, { useContext, useState, Component } from "react";
 import { Container, Row, Col } from 'react-bootstrap';
 
 import CartesianPlane from '../components/CartesianPlane';
@@ -16,8 +16,8 @@ const Perceptron = (props) => {
         <Container fluid>
             <Row>
                 <Col
-                    md={{span: 7}}
-                    sm={{span: 12}}
+                    md={{ span: 7 }}
+                    sm={{ span: 12 }}
                 >
                     <div className="card card--box">
                         <div className="card__header">
@@ -29,9 +29,9 @@ const Perceptron = (props) => {
                         }
                     </div>
                 </Col>
-                <Col 
-                    md={{span: 5}}
-                    sm={{span: 12}}
+                <Col
+                    md={{ span: 5 }}
+                    sm={{ span: 12 }}
                 >
                     <div className="card card--box">
                         <div className="card__header">
@@ -43,9 +43,9 @@ const Perceptron = (props) => {
                         perceptronState.entrenado &&
                         <Row>
                             <Col
-                                md={{span: 12}}
-                                sm={{span: 5}}
-                                >
+                                md={{ span: 12 }}
+                                sm={{ span: 5 }}
+                            >
                                 <div className="card card--box">
                                     <div style={{ width: '100%', height: "auto" }}>
                                         <Alert />
@@ -56,6 +56,7 @@ const Perceptron = (props) => {
                     }
                 </Col>
             </Row>
+
             {
                 perceptronState.iniciado &&
                 <NN />
@@ -82,7 +83,7 @@ const Perceptron = (props) => {
                                 }
                                 <ErrorChart />
                                 {
-                                    perceptronState.perceptron.errorAcumulado == 0 && 
+                                    perceptronState.perceptron.errorAcumulado == 0 &&
                                     <span>No hay información para mostrar</span>
                                 }
                             </div>
