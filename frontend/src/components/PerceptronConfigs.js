@@ -23,7 +23,15 @@ let clases = [];
 const PerceptronConfigs = (props) => {
     //const [perceptron, setPerceptron] = useState(null);
     //const [entrenado, setEntrenado] = useState(false);    
-    const { handleSubmit, register, errors, control, watch } = useForm();
+    const { handleSubmit, register, errors, control, watch, getValues } = useForm(
+        {
+            defaultValues: {
+                learning_rate: 0.1,
+                max_error: 0.01,
+                max_epic_number: 100
+            }
+        }
+    );
     const { perceptronState, setPerceptronState } = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
     const [iniciado, setIniciado] = useState(false);
@@ -168,7 +176,7 @@ const PerceptronConfigs = (props) => {
             return;
         }
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);
-        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;
+        const xd = perceptronState.perceptron.meanError.length >= perceptronState.perceptron.iterations;
         setPerceptronState({
             ...perceptronState,
             entrenado: true,
@@ -208,13 +216,11 @@ const PerceptronConfigs = (props) => {
                         }}
                         helperText={errors?.learning_rate?.message}
                         error={!!errors?.learning_rate}
-                        defaultValue={0.1}
                         margin="normal"
                         className="mt-2"
                     />
                     <br />
                     <Controller
-                        defaultValue={100}
                         as={TextField}
                         name="max_epic_number"
                         control={control}
@@ -229,7 +235,6 @@ const PerceptronConfigs = (props) => {
                     <br />
 
                     <Controller
-                        defaultValue={0.01}
                         as={TextField}
                         name="max_error"
                         control={control}

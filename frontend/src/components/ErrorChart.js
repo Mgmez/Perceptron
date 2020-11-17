@@ -13,8 +13,8 @@ const ErrorChart = (props) =>  {
 
 
     useEffect(() => {
-      setInfoGrouped(groupElements(perceptronState.perceptron.errorAcumulado));
-      let firstDataToShow = groupElements(perceptronState.perceptron.errorAcumulado);
+      setInfoGrouped(groupElements(perceptronState.perceptron.meanError));
+      let firstDataToShow = groupElements(perceptronState.perceptron.meanError);
       setDataToShow(firstDataToShow[itemsViewed].data);
     }, [])
 
@@ -65,7 +65,7 @@ const ErrorChart = (props) =>  {
         <Button onClick={() => afterData()} className="m-4"  variant="contained" color="primary">Anteriores {MAX_ELEMENTS_TO_SHOW}</Button>
         <Button  onClick={() => nextData()} className="m-4"  variant="contained" color="primary">Siguientes {MAX_ELEMENTS_TO_SHOW}</Button>
         <br></br>
-        <span>Mostrando un total de {perceptronState.perceptron.errorAcumulado.length}</span>
+        <span>Mostrando un total de {perceptronState.perceptron.meanError.length}</span>
         <ResponsiveContainer>               
           <LineChart 
             //data={perceptronState.perceptron.errorAcumulado} 

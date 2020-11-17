@@ -65,10 +65,7 @@ const Perceptron = (props) => {
                                 Grafica
                             </div>
                             <div style={{ width: '100%', height: 500, paddingBottom: '11%'}}>
-                                {
-                                    perceptronState.perceptron.errorAcumulado != 0 && 
-                                    <ErrorChart />
-                                }
+                                <ErrorChart />
                                 {
                                     perceptronState.perceptron.errorAcumulado == 0 && 
                                     <span>No hay información para mostrar</span>
