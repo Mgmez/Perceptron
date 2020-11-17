@@ -39,7 +39,7 @@ const CartesianPlane = (props) => {
             }
 
         if(!entrenado){
-            cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, clase);
+            cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, clase-1);
             setPerceptronState({            
                 ...perceptronState,
                 x: [

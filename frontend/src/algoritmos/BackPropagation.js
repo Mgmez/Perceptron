@@ -121,8 +121,15 @@ class BackPropagation {
             console.log("Error", meanSquareError);
             console.log("Error mínimo", this.maxErrorAllowed);
             console.log("pesos", this.layers)
-            if(epicNumber % 25 === 0){
+            if(epicNumber % 50 === 0){
+
+                this.cpDrawer.clearCanvas();                                       
                 this.cpDrawer.drawBarrido(this);
+                this.cpDrawer.drawAxis();          
+                inputs.forEach ((point, index) => {
+                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), outputs[index][0]) 
+                });     
+                await new Promise(r => setTimeout(r, 30));    
             }
 
         }

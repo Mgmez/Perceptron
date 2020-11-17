@@ -59,10 +59,14 @@ class CPDrawer {
 
     drawPoint(x, y, value) {
         //  console.log("clase: ", value);
-        const rect = this.canvas.getBoundingClientRect(),
-            ctx = this.canvas.getContext("2d");
+        const ctx = this.canvas.getContext("2d");
 
-        ctx.fillStyle = this.clases[value - 1].color;
+        
+        ctx.fillStyle = this.clases[value].color;
+        
+        
+        
+        
         ctx.fillRect(x - 2, y - 2, 4, 4); //cuadrito
         
         /*if(value === 1){
@@ -95,7 +99,7 @@ class CPDrawer {
 
         //console.log("clase: ", value);        
         const ctx = this.canvas.getContext("2d");
-        var density = 4;
+        var density = 5;
         var cont = 0;
                 for (let x = -5; x < 5; x += 0.1) {
                     for (let y = -5; y< 5; y += 0.1) {

@@ -19,14 +19,13 @@ const numCapas = [
 let clases = [];
 
 const PerceptronConfigs = (props) => {
-    //const [perceptron, setPerceptron] = useState(null);
-    //const [entrenado, setEntrenado] = useState(false);    
+   
     const { handleSubmit, register, errors, control, watch, getValues } = useForm(
         {
             defaultValues: {
                 learning_rate: 0.1,
                 max_error: 0.01,
-                max_epic_number: 1000
+                max_epic_number: 5000
             }
         }
     );
@@ -98,7 +97,7 @@ const PerceptronConfigs = (props) => {
 
     const iniciarPesos = async (values) => {
                     
-        let perceptron;
+        
         setPerceptronErrors({});
         if (!perceptronState?.x?.length) {
             setPerceptronErrors({
@@ -108,20 +107,7 @@ const PerceptronConfigs = (props) => {
             });
             return;
         }
-     /*
-        const x2 = [];
-        x2[0] = perceptron.calcularX2(-5);
-        x2[1] = perceptron.calcularX2(5);
-        console.log("x2: ", x2);
-        perceptronState.cpDrawer.clearCanvas();
-        perceptronState.cpDrawer.drawAxis();
-        perceptronState.x.forEach((point, index) => {
-            perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])
-        });
-      
-        perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#FF0040");
-      */
-       
+ 
         const neuronsPerLayer = [2, initConf.num_n_capa1];
         if (initConf.num_capas === 4) {
             neuronsPerLayer.push(initConf.num_n_capa2);
