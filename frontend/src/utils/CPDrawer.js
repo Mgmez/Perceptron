@@ -1,16 +1,16 @@
 
 const MAX_Y = 5, MAX_X = 5;
 const MIN_Y = -5, MIN_X = -5;
-
+const WIDTH = 10, HEIGHT = 10;
 class CPDrawer {
     constructor(canvas, clases) {
         this.canvas = canvas;
         this.widthCanvas = canvas.width;
         this.heightCanvas = canvas.height;
         this.clases = clases;
-    }    
-    
-    
+    }
+
+
     // Returns the physical x-coordinate of a logical x-coordinate:
     XC(x) {
         return (x - MIN_X) / (MAX_X - MIN_X) * this.widthCanvas
@@ -23,26 +23,26 @@ class CPDrawer {
 
     // Returns the logical x-coordinate of a physical x-coordinate:
     XL(x) {
-        return ((x * (MAX_X - MIN_X ) ) / this.widthCanvas)  + MIN_X
+        return ((x * (MAX_X - MIN_X)) / this.widthCanvas) + MIN_X
     }
 
     // Returns the logical y-coordinate of a physical y-coordinate:
     YL(y) {
-        return MAX_Y - (y *  (MAX_Y - MIN_Y)) / this.heightCanvas;
+        return MAX_Y - (y * (MAX_Y - MIN_Y)) / this.heightCanvas;
     }
 
     drawAxis() {
         const ctx = this.canvas.getContext("2d"),
             cty = this.canvas.getContext("2d");
-        
+
         ctx.beginPath();
-        ctx.moveTo(this.widthCanvas/2,0);
-        ctx.lineTo(this.widthCanvas/2,this.heightCanvas);
+        ctx.moveTo(this.widthCanvas / 2, 0);
+        ctx.lineTo(this.widthCanvas / 2, this.heightCanvas);
         ctx.stroke();
 
         cty.beginPath();
-        cty.moveTo(0,this.heightCanvas/2);
-        cty.lineTo(this.widthCanvas,this.heightCanvas/2);
+        cty.moveTo(0, this.heightCanvas / 2);
+        cty.lineTo(this.widthCanvas, this.heightCanvas / 2);
         cty.stroke();
 
 
@@ -53,16 +53,17 @@ class CPDrawer {
             ctx.fillText(`${i}`, this.XC(i), this.YC(-0.2));
             ctx.fillText(`${i}`, this.XC(0.1), this.YC(i));
         }
-        ctx.fillText(`${MAX_X}`, this.widthCanvas-10, this.YC(-0.2));
+        ctx.fillText(`${MAX_X}`, this.widthCanvas - 10, this.YC(-0.2));
         ctx.fillText(`${MAX_Y}`, this.XC(0.1), 10);
     }
 
     drawPoint(x, y, value) {
+        //  console.log("clase: ", value);
         const rect = this.canvas.getBoundingClientRect(),
             ctx = this.canvas.getContext("2d");
-     
-        ctx.fillStyle = this.clases[value-1].color;
-        ctx.fillRect(x-2,y-2,4,4); //cuadrito
+
+        ctx.fillStyle = this.clases[value - 1].color;
+        ctx.fillRect(x - 2, y - 2, 4, 4); //cuadrito
         
         /*if(value === 1){
            
@@ -74,25 +75,63 @@ class CPDrawer {
         }*/
     }
 
-    drawLine(x1, y1, x2, y2, color="#000") {
+    drawLine(x1, y1, x2, y2, color = "#000") {
         x1 = this.XC(x1);
         x2 = this.XC(x2);
         y1 = this.YC(y1);
         y2 = this.YC(y2);
-        
+
         const context = this.canvas.getContext("2d");
         context.save();
-        context.strokeStyle = color;        
+        context.strokeStyle = color;
         context.beginPath();
-        context.moveTo(x1,y1);
-        context.lineTo(x2,y2);
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
         context.stroke();
         context.restore();
     }
+    
+    drawBarrido(nn) {
 
+        //console.log("clase: ", value);        
+        const ctx = this.canvas.getContext("2d");
+        var density = 4;
+        var cont = 0;
+                for (let x = -5; x < 5; x += 0.1) {
+                    for (let y = -5; y< 5; y += 0.1) {
+                        
+                        let mayor = 0;
+                        let ind = 0;
+                        let out = nn.predict([x,y]);
+                      /*  if(cont % 100 == 0){
+                            console.log("out:" , out);
+                        }*/
+                        
+                        for(let k = 0; k < out.length; k++){
+                            if (out[k] > mayor)
+                            {
+                                mayor = out[k];
+                                ind = k;
+                            }
+                        }                         
+                        
+                        ctx.fillStyle = this.clases[ind].color;
+                        ctx.fillRect(
+                            this.XC (x) - density / 2 - 1, 
+                            this.YC(y) - density / 2 - 1, 
+                            density + 2, density + 2);
+                        //cont++;
+                        
+                    }
+                }
+        
+
+    }
+
+    
     clearCanvas() {
         const context = this.canvas.getContext("2d");
-        
+
         //context.clearRect(0,0, this.widthCanvas, this.heightCanvas);
 
         // Store the current transformation matrix

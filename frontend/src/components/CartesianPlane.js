@@ -33,10 +33,13 @@ const CartesianPlane = (props) => {
             physicalYCoordinate = event.clientY - rect.top,
             logicalXCoordinate = cpDrawer.XL(physicalXCoordinate),
             logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),    
-            value =  parseInt(clase);
+            value = [];
+            for (let i = 0; i < perceptronState.clases.length; i++) {
+                value[i] = (i == clase - 1) ? 1 : 0;
+            }
 
         if(!entrenado){
-            cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, value);
+            cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, clase);
             setPerceptronState({            
                 ...perceptronState,
                 x: [

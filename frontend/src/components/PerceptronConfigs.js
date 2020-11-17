@@ -4,8 +4,7 @@ import { Form } from 'react-bootstrap';
 import { Button, FormControlLabel, Radio, RadioGroup, TextField, FormLabel,FormControl} from '@material-ui/core';
 import { PerceptronContext } from "./PerceptronContext.js";
 import Adaline from '../algoritmos/Adaline.js';
-//import Network from '../nn/network';
-
+import BackPropagation from '../algoritmos/BackPropagation.js';
 
 const numCapas = [
     {
@@ -22,7 +21,15 @@ let clases = [];
 const PerceptronConfigs = (props) => {
     //const [perceptron, setPerceptron] = useState(null);
     //const [entrenado, setEntrenado] = useState(false);    
-    const { handleSubmit, register, errors, control, watch } = useForm();
+    const { handleSubmit, register, errors, control, watch, getValues } = useForm(
+        {
+            defaultValues: {
+                learning_rate: 0.1,
+                max_error: 0.01,
+                max_epic_number: 1000
+            }
+        }
+    );
     const { perceptronState, setPerceptronState } = useContext(PerceptronContext);
     const [perceptronErrors, setPerceptronErrors] = useState({});
     const [iniciado, setIniciado] = useState(false);
@@ -45,13 +52,13 @@ const PerceptronConfigs = (props) => {
         if (values.type === 'unacapa') {
             setInitConf({
                 num_class: values.max_class,
-                num_capas: 1,
+                num_capas: 3,
                 num_n_capa1: values.max_capa1
             });
         } else {
             setInitConf({
                 num_class: values.max_class,
-                num_capas: 2,
+                num_capas: 4,
                 num_n_capa1: values.max_capa1,
                 num_n_capa2: values.max_capa2
             });
@@ -90,9 +97,7 @@ const PerceptronConfigs = (props) => {
     }
 
     const iniciarPesos = async (values) => {
-
-                 
-        
+                    
         let perceptron;
         setPerceptronErrors({});
         if (!perceptronState?.x?.length) {
@@ -103,18 +108,7 @@ const PerceptronConfigs = (props) => {
             });
             return;
         }
-        perceptron = new Adaline(
-            perceptronState.x[0].length,
-            values.max_epic_number,
-            values.max_error,
-            values.learning_rate,
-            perceptronState.cpDrawer
-        );
-        
-        setPerceptronState({
-            ...perceptronState,
-            perceptron,
-        });
+     /*
         const x2 = [];
         x2[0] = perceptron.calcularX2(-5);
         x2[1] = perceptron.calcularX2(5);
@@ -126,92 +120,50 @@ const PerceptronConfigs = (props) => {
         });
       
         perceptronState.cpDrawer.drawLine(-5, x2[0], 5, x2[1], "#FF0040");
-      
+      */
+       
+        const neuronsPerLayer = [2, initConf.num_n_capa1];
+        if (initConf.num_capas === 4) {
+            neuronsPerLayer.push(initConf.num_n_capa2);
+        }
+        neuronsPerLayer.push(initConf.num_class);
+        const backP = new BackPropagation(
+            initConf.num_capas,
+            neuronsPerLayer,
+            values.learning_rate,
+            values.max_error,
+            values.max_epic_number,
+            perceptronState.cpDrawer );
 
-
+        setPerceptronState({
+            ...perceptronState,
+            perceptron: backP,
+        });
+        perceptronState.cpDrawer.drawBarrido(backP);    
+        
 
     }
 
-    const probarXOR = async () => {
-        const layers = [
-            2, // This is the input layer
-            10, // Hidden layer 1
-            10, // Hidden layer 2
-            1 // Output
-          ]
-          /*
-          const network = new Network(layers)
-          
-          // Start training
-          const numberOfIterations = 20000
-          
-          // Training data for a "XOR" logic gate
-          const trainingData = [{
-            input : [0,0],
-            output: [0]
-          }, {
-            input : [0,1],
-            output: [1]
-          }, {
-            input : [1,0],
-            output: [1]
-          }, {
-            input : [1,1],
-            output: [0]
-          }]
-          
-          for(var i = 0; i < numberOfIterations; i ++) {
-            // Get a random training sample
-            const trainingItem = trainingData[Math.floor((Math.random()*trainingData.length))]
-            network.train(trainingItem.input, trainingItem.output);
-          }
-          
-          // After training we can see if it works
-          // we call activate to set a input in the first layer
-          network.activate(trainingData[0].input)
-          const resultA = network.run()
-          
-          network.activate(trainingData[1].input)
-          const resultB = network.run()
-          
-          network.activate(trainingData[2].input)
-          const resultC = network.run()
-          
-          network.activate(trainingData[3].input)
-          const resultD = network.run()
-          console.log('Expected 0 got', resultA[0])
-          console.log('Expected 1 got', resultB[0])
-          console.log('Expected 1 got', resultC[0])
-          console.log('Expected 0 got', resultD[0])*/
-    }
+
     const entrenar = async () => {
-        /*
+       
         setPerceptronErrors({});
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
                 "trainedPerceptron": {
-                    message: "Primero inicialice el perceptron"
+                    message: "Debes inicializar la red"
                 }
             });
             return;
         }
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);
-        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;
+        const xd = perceptronState.perceptron.meanError.length >= perceptronState.perceptron.iterations;
         setPerceptronState({
             ...perceptronState,
             entrenado: true,
             limiteAlcanzado: xd
         });
-        console.log(perceptronState.perceptron.w);*/
-
-
-        const layers = [
-            2, // This is the input layer
-            2, // Hidden layer 1
-            2, // Hidden layer 2
-            1 // Output
-          ];
-
+        //perceptronState.cpDrawer.drawBarrido(perceptronState.perceptron);    
          
     }
 
@@ -246,13 +198,11 @@ const PerceptronConfigs = (props) => {
                         }}
                         helperText={errors?.learning_rate?.message}
                         error={!!errors?.learning_rate}
-                        defaultValue={0.1}
                         margin="normal"
                         className="mt-2"
                     />
                     <br />
                     <Controller
-                        defaultValue={100}
                         as={TextField}
                         name="max_epic_number"
                         control={control}
@@ -267,7 +217,6 @@ const PerceptronConfigs = (props) => {
                     <br />
 
                     <Controller
-                        defaultValue={0.01}
                         as={TextField}
                         name="max_error"
                         control={control}
@@ -320,7 +269,7 @@ const PerceptronConfigs = (props) => {
                     <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{ color: "#03A9F4" }}>  Inicializar </Button>
 
                 </Form>
-                <Form onSubmit={handleSubmit(probarXOR)} className="">
+                <Form onSubmit={handleSubmit(entrenar)} className="">
                     <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{ color: "#03A9F4" }}>Entrenar</Button>
                 </Form>
 
