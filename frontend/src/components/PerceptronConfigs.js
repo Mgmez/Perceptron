@@ -6,6 +6,7 @@ import { PerceptronContext } from "./PerceptronContext.js";
 // import Adaline from '../algoritmos/Adaline.js';
 import BackPropagation from '../algoritmos/BackPropagationV2.js';
 
+
 const numCapas = [
     {
         label: "1",
@@ -17,6 +18,8 @@ const numCapas = [
     }
 ]
 let clases = [];
+
+
 
 const PerceptronConfigs = (props) => {
    
@@ -137,7 +140,7 @@ const PerceptronConfigs = (props) => {
             perceptron: backP,
         });
         perceptronState.cpDrawer.drawBarrido(backP);    
-        
+        console.log(backP.layers);
 
     }
 
@@ -184,7 +187,9 @@ const PerceptronConfigs = (props) => {
     if (iniciado) {
         return (
             <>
+                
                 <Form onSubmit={handleSubmit(iniciarPesos)} className="">
+                    
                     <Controller
                         as={TextField}
                         name="learning_rate"

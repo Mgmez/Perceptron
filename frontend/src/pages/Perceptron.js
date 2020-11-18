@@ -38,6 +38,7 @@ const Perceptron = (props) => {
                             Configuraciones
                         </div>
                         <PerceptronConfigs />
+                        
                     </div>
                     {  
                         perceptronState.entrenado &&
