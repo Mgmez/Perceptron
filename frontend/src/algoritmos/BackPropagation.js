@@ -1,7 +1,7 @@
 import * as math from "mathjs";
 
 class BackPropagation {
-    constructor(layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber, cpDrawer){
+    constructor(layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber, cpDrawer, setPerceptronState){
         console.log("data: ",layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber)
         this.layers = [];
         this.learningRate = learningRate;
@@ -10,6 +10,7 @@ class BackPropagation {
         this.meanError = [];
         this.initLayers(layersCount, layersNeuronsCount)
         this.cpDrawer = cpDrawer;
+        this.setPerceptronState = setPerceptronState
     }
 
     initLayers(layersCount, layersNeuronsCount) {
@@ -119,16 +120,23 @@ class BackPropagation {
             this.meanError.push({epoca: "Ep "+ parseFloat(epicNumber), error: meanSquareError});
             console.log("Epoca", epicNumber);
             console.log("Error", meanSquareError);
-            console.log("Error mínimo", this.maxErrorAllowed);
-            console.log("pesos", this.layers)
+            // console.log("Error mínimo", this.maxErrorAllowed);
+            // console.log("pesos", this.layers)
             if(epicNumber % 50 === 0){
 
                 this.cpDrawer.clearCanvas();                                       
                 this.cpDrawer.drawBarrido(this);
                 this.cpDrawer.drawAxis();          
                 inputs.forEach ((point, index) => {
-                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), outputs[index][0]) 
-                });     
+                    let output = outputs[index].indexOf(1);
+                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), output) 
+                });
+                this.setPerceptronState(state => {
+                    return {
+                        ...state,
+                        meanError: this.meanError
+                    }
+                })
                 await new Promise(r => setTimeout(r, 30));    
             }
 

@@ -13,10 +13,11 @@ const ErrorChart = (props) =>  {
 
 
     useEffect(() => {
-      setInfoGrouped(groupElements(perceptronState.perceptron.meanError));
-      let firstDataToShow = groupElements(perceptronState.perceptron.meanError);
+      console.log(perceptronState)
+      setInfoGrouped(groupElements(perceptronState.meanError));
+      let firstDataToShow = groupElements(perceptronState.meanError);
       setDataToShow(firstDataToShow[itemsViewed].data);
-    }, [])
+    }, [perceptronState.meanError])
 
     /*const getHarcodedInfo = () => {
       let data = [];
@@ -65,15 +66,15 @@ const ErrorChart = (props) =>  {
         <Button onClick={() => afterData()} className="m-4"  variant="contained" color="primary">Anteriores {MAX_ELEMENTS_TO_SHOW}</Button>
         <Button  onClick={() => nextData()} className="m-4"  variant="contained" color="primary">Siguientes {MAX_ELEMENTS_TO_SHOW}</Button>
         <br></br>
-        <span>Mostrando un total de {perceptronState.perceptron.meanError.length}</span>
-        <ResponsiveContainer>               
+        <span>Mostrando un total de {perceptronState.meanError.length}</span>
+        <ResponsiveContainer>
           <LineChart 
-            //data={perceptronState.perceptron.errorAcumulado} 
-            data={dataToShow}
+            data={perceptronState.meanError} 
+            //data={dataToShow}
             margin={{
               top: 5, right: 30, left: 20, bottom: 5,
             }}
-          >          
+          >
             <Line type="monotone" dataKey="error" stroke="#1976d2" activeDot={{ r: 8 }}/>
               <CartesianGrid stroke="#ccc" />
               <XAxis dataKey="epoca" interval={0} angle={60} dx={20}/>

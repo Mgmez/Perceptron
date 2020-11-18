@@ -16,9 +16,9 @@ function App() {
     cpDrawer: null,
     limiteAlcanzado: false, 
     claseSelect: "1",
-    iniciado: false
+    iniciado: false,
+    meanError: []
   });
-
  
   return (
     <div className="App">
@@ -32,8 +32,6 @@ function App() {
 
         <Footer />
       </PerceptronContext.Provider>
-      
-      
     </div>
   );
 }

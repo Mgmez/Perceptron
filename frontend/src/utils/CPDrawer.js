@@ -101,33 +101,39 @@ class CPDrawer {
         const ctx = this.canvas.getContext("2d");
         var density = 5;
         var cont = 0;
-                for (let x = -5; x < 5; x += 0.1) {
-                    for (let y = -5; y< 5; y += 0.1) {
-                        
-                        let mayor = 0;
-                        let ind = 0;
-                        let out = nn.predict([x,y]);
-                      /*  if(cont % 100 == 0){
-                            console.log("out:" , out);
-                        }*/
-                        
-                        for(let k = 0; k < out.length; k++){
-                            if (out[k] > mayor)
-                            {
-                                mayor = out[k];
-                                ind = k;
-                            }
-                        }                         
-                        
-                        ctx.fillStyle = this.clases[ind].color;
-                        ctx.fillRect(
-                            this.XC (x) - density / 2 - 1, 
-                            this.YC(y) - density / 2 - 1, 
-                            density + 2, density + 2);
-                        //cont++;
-                        
+        for (let x = -5; x < 5; x += 0.1) {
+            for (let y = -5; y< 5; y += 0.1) {
+                
+                let mayor = 0;
+                let ind = 0;
+                let out = nn.predict([x,y]);
+                /*  if(cont % 100 == 0){
+                    console.log("out:" , out);
+                }*/
+                
+                for(let k = 0; k < out.length; k++){
+                    if (out[k] > mayor)
+                    {
+                        mayor = out[k];
+                        ind = k;
                     }
                 }
+                
+                ctx.fillStyle = this.clases[ind].color;
+                ctx.fillRect(
+                    this.XC(x)-1,
+                    this.YC(y)-1,
+                    2, 
+                    2,
+                )
+                // ctx.fillRect(
+                //     this.XC(x) - density / 2 - 1, 
+                //     this.YC(y) - density / 2 - 1, 
+                //     density + 2, density + 2);
+                //cont++;
+                
+            }
+        }
         
 
     }

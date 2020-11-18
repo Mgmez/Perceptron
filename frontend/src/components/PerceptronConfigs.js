@@ -119,7 +119,9 @@ const PerceptronConfigs = (props) => {
             values.learning_rate,
             values.max_error,
             values.max_epic_number,
-            perceptronState.cpDrawer );
+            perceptronState.cpDrawer,
+            setPerceptronState
+        );
 
         setPerceptronState({
             ...perceptronState,
@@ -144,6 +146,7 @@ const PerceptronConfigs = (props) => {
         }
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);
         const xd = perceptronState.perceptron.meanError.length >= perceptronState.perceptron.iterations;
+        console.log("Antes", perceptronState.meanError);
         setPerceptronState({
             ...perceptronState,
             entrenado: true,
@@ -269,7 +272,7 @@ const PerceptronConfigs = (props) => {
             <>
                 <Form onSubmit={handleSubmit(iniciar)} className="">
                     <Controller
-                        defaultValue={2}
+                        defaultValue={3}
                         as={TextField}
                         name="max_class"
                         control={control}

@@ -10,10 +10,9 @@ import NN from '../components/NN';
 
 
 const Perceptron = (props) => {
-    const {perceptronState} = useContext(PerceptronContext); 
+    const {perceptronState} = useContext(PerceptronContext);
     return <>
         <Container fluid>
-            
             <Row>
                 <Col
                     md={{span: 7}}
@@ -26,8 +25,7 @@ const Perceptron = (props) => {
                         {
                             perceptronState.iniciado &&
                             <CartesianPlane />
-                        }                    
-                        
+                        }
                     </div>
                 </Col>
                 <Col 
@@ -38,38 +36,37 @@ const Perceptron = (props) => {
                         <div className="card__header">
                             Configuraciones
                         </div>
-                        <PerceptronConfigs />                       
+                        <PerceptronConfigs />
                     </div>
                     {  
-                        perceptronState.entrenado &&         
+                        perceptronState.entrenado &&
                         <Row>
                             <Col
                                 md={{span: 12}}
                                 sm={{span: 5}}
                                 >
                                 <div className="card card--box">
-                                    
                                     <div style={{ width: '100%', height: 75 }}>
                                         <Alert />
                                     </div>
                                 </div>
                             </Col>
-                        </Row>                                                            
+                        </Row>
                     }
                 </Col>
             </Row>
             {
-                            perceptronState.iniciado &&
-                            <NN />
-                        }                    
-            {
-                perceptronState.entrenado && 
-                <Row>
-                    <Col sm={{span: 12}}>
-                        <div className="card card--box">
-                            <div className="card__header">
-                                Grafica
-                            </div>
+                perceptronState.iniciado &&
+                <NN />
+            }
+            <Row>
+                <Col sm={{span: 12}}>
+                    <div className="card card--box">
+                        <div className="card__header">
+                            Grafica
+                        </div>
+                        {
+                            perceptronState.perceptron &&
                             <div style={{ width: '100%', height: 500, paddingBottom: '11%'}}>
                                 <ErrorChart />
                                 {
@@ -77,10 +74,10 @@ const Perceptron = (props) => {
                                     <span>No hay información para mostrar</span>
                                 }
                             </div>
-                        </div>
-                    </Col>
-                </Row>
-            }
+                        }
+                    </div>
+                </Col>
+            </Row>
         </Container>
     </>
 }
