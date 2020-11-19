@@ -11,6 +11,7 @@ import NN from '../components/NN';
 
 const Perceptron = (props) => {
     const {perceptronState} = useContext(PerceptronContext);
+    const meanError = perceptronState?.perceptron?.meanError;
     return <>
         <Container fluid>
             <Row>
@@ -46,7 +47,7 @@ const Perceptron = (props) => {
                                 sm={{span: 5}}
                                 >
                                 <div className="card card--box">
-                                    <div style={{ width: '100%', height: 75 }}>
+                                    <div style={{ width: '100%', height: "auto" }}>
                                         <Alert />
                                     </div>
                                 </div>
@@ -68,6 +69,17 @@ const Perceptron = (props) => {
                         {
                             perceptronState.perceptron &&
                             <div style={{ width: '100%', height: 500, paddingBottom: '11%'}}>
+                                {
+                                    (!!meanError.length && !perceptronState.entrenado) &&
+                                    <>
+                                        <div>
+                                            <span>{`Número de epoca actual: ${meanError.length}`}</span>
+                                        </div>
+                                        <div>
+                                            <span>{`Error actual: ${meanError[meanError.length-1].error}`}</span>
+                                        </div>
+                                    </>
+                                }
                                 <ErrorChart />
                                 {
                                     perceptronState.perceptron.errorAcumulado == 0 && 

@@ -87,7 +87,7 @@ class BackPropagation {
                         weights.forEach(neuron => {
                             neuron.shift(); //Remover el peso del umbral
                         });
-                        
+
                         // f'(n[i]) * w[i+1]T * s[i+1]
                         // sensitivity[i] = diferential * math.transpose(weights) * sensitivity[i+1]
                         // console.log("diferencial", diferential.size());
@@ -122,25 +122,30 @@ class BackPropagation {
             console.log("Error", meanSquareError);
             // console.log("Error mínimo", this.maxErrorAllowed);
             // console.log("pesos", this.layers)
-            if(epicNumber % 50 === 0){
+            if(epicNumber % 25 === 0){
 
-                this.cpDrawer.clearCanvas();                                       
+                this.cpDrawer.clearCanvas();
                 this.cpDrawer.drawBarrido(this);
-                this.cpDrawer.drawAxis();          
+                this.cpDrawer.drawAxis();
                 inputs.forEach ((point, index) => {
                     let output = outputs[index].indexOf(1);
-                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), output) 
+                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), output);
                 });
                 this.setPerceptronState(state => {
                     return {
                         ...state,
                         meanError: this.meanError
                     }
-                })
-                await new Promise(r => setTimeout(r, 30));    
+                });
+                await new Promise(r => setTimeout(r, 10));
             }
-
         }
+        this.setPerceptronState(state => {
+            return {
+                ...state,
+                meanError: this.meanError
+            }
+        });
     }
 
     initFitData = () => {

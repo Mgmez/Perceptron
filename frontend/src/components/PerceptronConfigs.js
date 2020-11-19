@@ -146,11 +146,12 @@ const PerceptronConfigs = (props) => {
         }
         await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);
         const xd = perceptronState.perceptron.meanError.length >= perceptronState.perceptron.iterations;
-        console.log("Antes", perceptronState.meanError);
-        setPerceptronState({
-            ...perceptronState,
-            entrenado: true,
-            limiteAlcanzado: xd
+        setPerceptronState(prevState => {
+            return {
+                ...prevState,
+                entrenado: true,
+                limiteAlcanzado: xd
+            }
         });
         //perceptronState.cpDrawer.drawBarrido(perceptronState.perceptron);    
          
