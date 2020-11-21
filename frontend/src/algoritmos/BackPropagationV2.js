@@ -39,26 +39,24 @@ class BackPropagation {
             accumulatedSquareError = 0;
             inputs.forEach((inputData, indexInput) => {
                 const { sensitivity, net, a } = this.initFitData();
+
                 //Obtener salidas de cada capa (forward)
                 this.layers.forEach((layer, indexLayer) => {
-                    //Obtener net (pesos * entradas) (multiplicación de matriz por vector = vector)
-                    const inputTemp = (indexLayer === 0) ? inputData : a[indexLayer - 1];
-                    const input = JSON.parse(JSON.stringify(inputTemp));
-                    input.unshift(-1); //Agregar un -1 al vector de entradas en la posición 0 (umbral)
-                    // console.log(`Capa ${indexLayer + 1}`, layer);
-                    // console.log("Entrada", input);
-                    net[indexLayer] = math.multiply(layer, input);
-                    // console.log("Net", net[indexLayer]);
-                    //Evaluar en función de activación (f(net))
-                    for (let indexNeuron = 0; indexNeuron < net[indexLayer].length; indexNeuron++){
+                    layer.forEach((neuron, indexNeuron) => {
+                        const input = (indexLayer === 0) ? inputData : a[indexLayer - 1];
+                        net[indexLayer][indexNeuron] = -neuron[0];
+                        for (let i = 0; i < input.length; i++) {
+                            net[indexLayer][indexNeuron] += neuron[i+1] * input[i];
+                        }
                         a[indexLayer][indexNeuron] = this.f(net[indexLayer][indexNeuron]);
-                    }
-                    // console.log("Salida", a[indexLayer]);
+                    });
                 });
                 
                 //Calcular el error
-                // error = outputs[indexInput] - a[a.length-1]; //Deseada - obtenida (vector)
-                const error = math.subtract(outputs[indexInput], a[a.length-1]);
+                const error = [];
+                outputs[indexInput].forEach((output, index) => {
+                    error[index] = output - a[a.length-1][index];
+                });
                 const squareSum = error.reduce((accumulator, value) => {
                     return accumulator + Math.pow(value,2);
                 }, 0);
@@ -66,59 +64,39 @@ class BackPropagation {
                 
                 //Back-propagation (backward)
                 //Calcular sensibilidades
-                //Para las derivadas es vector de derivadas multiplicado por matriz identidad
                 for(let i = this.layers.length-1; i >=0; i--) {
-                    //Convertir (fp) a matriz diagonal
-                    const diferential = [];
-                    for(let j = 0; j < net[i].length; j++) {
-                        diferential[j] = [];
-                        for(let k = 0; k < net[i].length; k++) {
-                            diferential[j][k] = (j === k) ? this.fp(net[i][j]) : 0;
-                        }    
-                    }
                     if (i === this.layers.length-1) { //adaline neuronas de salida ultima capa
-                        // -2 * f'(n[i]) (d-a)
-                        sensitivity[i] = math.multiply(-2, diferential); //constnte * matriz = matriz
-                        sensitivity[i] = math.multiply(sensitivity[i], error); //matriz * vector = vector
-                    } else { //Se calcula la sensibilidad con base en la sensibilidad de la capa siguiente
-                        //Los pesos de la capa siguiente (this.layers[i+1]) se deben transponer, ignorando el peso del umbral
-                        const weights = JSON.parse(JSON.stringify(this.layers[i+1]));
-                        weights.forEach(neuron => {
-                            neuron.shift(); //Remover el peso del umbral
+                        this.layers[i].forEach((neuron, j) => {
+                            sensitivity[i][j] = -2 * this.fp(net[i][j]) * error[j];
                         });
-
-                        // f'(n[i]) * w[i+1]T * s[i+1]
-                        // sensitivity[i] = diferential * math.transpose(weights) * sensitivity[i+1]
-                        // console.log("diferencial", diferential.size());
-                        sensitivity[i] = math.multiply(diferential, math.transpose(weights)); //matriz * matriz = matriz
-                        sensitivity[i] = math.multiply(sensitivity[i], sensitivity[i+1]); //matriz * vector = vector
+                    } else { //Se calcula la sensibilidad con base en la sensibilidad de la capa siguiente
+                        this.layers[i].forEach((neuron, j) => {
+                            let sum = 0;
+                            this.layers[i+1].forEach((neuron, k) => {
+                                sum += this.fp(net[i][j]) * neuron[j+1] * sensitivity[i+1][k];
+                            });
+                            sensitivity[i][j] = sum;
+                        });
                     }
                 }
                 //Adaptar pesos
                 for(let i = this.layers.length-1; i >=0; i--) { //Recorrer capas
-                    // cambio de w = 
                     const inputTemp = (i === 0) ? inputData : a[i-1];
                     const input = JSON.parse(JSON.stringify(inputTemp));
                     input.unshift(-1);
 
                     this.layers[i].forEach((neuron, index) => { //Recorrer neuronas
-                        // console.log("Sensibilidad neurona", sensitivity[i][index]);
-                        let weightChange = math.multiply(sensitivity[i][index], math.transpose(input));
-                        // console.log("WeightChange", weightChange, this.learningRate)
-                        weightChange = math.multiply(weightChange, this.learningRate);
-
-                        for (let j = 0; j < neuron.length; j++) {
-                            // console.log(neuron[j], weightChange);
-                            neuron[j] -= weightChange[j];
-                        }
+                        neuron.forEach((weight, j) => {
+                            neuron[j] = weight - (this.learningRate * sensitivity[i][index] * input[j]);
+                        });
                     });
                 }
             });
             epicNumber++;
             meanSquareError = accumulatedSquareError / inputs.length;
             this.meanError.push({epoca: "Ep "+ parseFloat(epicNumber), error: meanSquareError});
-            // console.log("Epoca", epicNumber);
-            // console.log("Error", meanSquareError);
+            console.log("Epoca", epicNumber);
+            console.log("Error", meanSquareError);
             // console.log("Error mínimo", this.maxErrorAllowed);
             // console.log("pesos", this.layers)
             if(epicNumber % 25 === 0){
@@ -186,15 +164,14 @@ class BackPropagation {
     predict = (inputs) => {
         const { a, net } = this.initFitData();
         this.layers.forEach((layer, indexLayer) => {
-            const input = (indexLayer === 0) ? inputs : a[indexLayer - 1];
-            input.unshift(-1); //Agregar un -1 al vector de entradas en la posición 0 (umbral)
-            //Obtener net (pesos * entradas) (multiplicación de matriz por vector = vector)
-            net[indexLayer] = math.multiply(layer, input);
-
-            //Evaluar en función de activación (f(net))
-            for (let indexNeuron = 0; indexNeuron < net[indexLayer].length; indexNeuron++){
+            layer.forEach((neuron, indexNeuron) => {
+                const input = (indexLayer === 0) ? inputs : a[indexLayer - 1];
+                net[indexLayer][indexNeuron] = -neuron[0];
+                for (let i = 0; i < input.length; i++) {
+                    net[indexLayer][indexNeuron] += neuron[i+1] * input[i];
+                }
                 a[indexLayer][indexNeuron] = this.f(net[indexLayer][indexNeuron]);
-            }
+            });
         });
         return a[a.length-1];
     }

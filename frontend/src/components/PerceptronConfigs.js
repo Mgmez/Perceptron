@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap';
 import { Button, FormControlLabel, Radio, RadioGroup, TextField, FormLabel,FormControl} from '@material-ui/core';
 import { PerceptronContext } from "./PerceptronContext.js";
 import Adaline from '../algoritmos/Adaline.js';
-import BackPropagation from '../algoritmos/BackPropagation.js';
+import BackPropagation from '../algoritmos/BackPropagationV2.js';
 
 const numCapas = [
     {
@@ -167,6 +167,7 @@ const PerceptronConfigs = (props) => {
             entrenado: false,
             x: [],
             y: [],
+            meanError: []
         });
     }
 

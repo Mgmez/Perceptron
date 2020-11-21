@@ -107,7 +107,7 @@ class CPDrawer {
                 let mayor = 0;
                 let ind = 0;
                 let out = nn.predict([x,y]);
-                /*  if(cont % 100 == 0){
+                /*if(cont % 100 == 0){
                     console.log("out:" , out);
                 }*/
                 
