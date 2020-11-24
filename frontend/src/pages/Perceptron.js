@@ -58,10 +58,7 @@ const Perceptron = (props) => {
                 </Col>
             </Row>
 
-            {
-                perceptronState.iniciado &&
-                <NN />
-            }
+           
             <Row>
                 <Col sm={{span: 12}}>
                     <div className="card card--box">
@@ -92,6 +89,10 @@ const Perceptron = (props) => {
                     </div>
                 </Col>
             </Row>
+            {
+                perceptronState.perceptron != null &&
+                <NN />
+            }
         </Container>
     </>
 }
