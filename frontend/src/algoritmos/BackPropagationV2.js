@@ -1,5 +1,3 @@
-import * as math from "mathjs";
-
 class BackPropagation {
     constructor(layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber, cpDrawer, setPerceptronState){
         console.log("data: ",layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber)
@@ -41,16 +39,7 @@ class BackPropagation {
                 const { sensitivity, net, a } = this.initFitData();
 
                 //Obtener salidas de cada capa (forward)
-                this.layers.forEach((layer, indexLayer) => {
-                    layer.forEach((neuron, indexNeuron) => {
-                        const input = (indexLayer === 0) ? inputData : a[indexLayer - 1];
-                        net[indexLayer][indexNeuron] = -neuron[0];
-                        for (let i = 0; i < input.length; i++) {
-                            net[indexLayer][indexNeuron] += neuron[i+1] * input[i];
-                        }
-                        a[indexLayer][indexNeuron] = this.f(net[indexLayer][indexNeuron]);
-                    });
-                });
+                this.forward(inputData, net, a);
                 
                 //Calcular el error
                 const error = [];
@@ -63,34 +52,7 @@ class BackPropagation {
                 accumulatedSquareError += Math.sqrt(squareSum);
                 
                 //Back-propagation (backward)
-                //Calcular sensibilidades
-                for(let i = this.layers.length-1; i >=0; i--) {
-                    if (i === this.layers.length-1) { //adaline neuronas de salida ultima capa
-                        this.layers[i].forEach((neuron, j) => {
-                            sensitivity[i][j] = -2 * this.fp(net[i][j]) * error[j];
-                        });
-                    } else { //Se calcula la sensibilidad con base en la sensibilidad de la capa siguiente
-                        this.layers[i].forEach((neuron, j) => {
-                            let sum = 0;
-                            this.layers[i+1].forEach((neuron, k) => {
-                                sum += this.fp(net[i][j]) * neuron[j+1] * sensitivity[i+1][k];
-                            });
-                            sensitivity[i][j] = sum;
-                        });
-                    }
-                }
-                //Adaptar pesos
-                for(let i = this.layers.length-1; i >=0; i--) { //Recorrer capas
-                    const inputTemp = (i === 0) ? inputData : a[i-1];
-                    const input = JSON.parse(JSON.stringify(inputTemp));
-                    input.unshift(-1);
-
-                    this.layers[i].forEach((neuron, index) => { //Recorrer neuronas
-                        neuron.forEach((weight, j) => {
-                            neuron[j] = weight - (this.learningRate * sensitivity[i][index] * input[j]);
-                        });
-                    });
-                }
+                this.backward(sensitivity, inputData, net, a, error);
             });
             epicNumber++;
             meanSquareError = accumulatedSquareError / inputs.length;
@@ -100,27 +62,7 @@ class BackPropagation {
             // console.log("Error mínimo", this.maxErrorAllowed);
             // console.log("pesos", this.layers)
             if(epicNumber % 25 === 0){
-
-                this.cpDrawer.clearCanvas();
-                this.cpDrawer.drawBarrido(this);
-                this.cpDrawer.drawAxis();
-                //Dibujar lineas de la primer capa oculta
-                // this.layers[1].forEach(neuron => {
-                //     const y1 = this.calcularX2(neuron, -5);
-                //     const y2 = this.calcularX2(neuron, 5);
-                //     this.cpDrawer.drawLine(-5, y1, 5, y2);
-                // });
-                inputs.forEach ((point, index) => {
-                    let output = outputs[index].indexOf(1);
-                    this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), output);
-                });
-                this.setPerceptronState(state => {
-                    return {
-                        ...state,
-                        meanError: this.meanError
-                    }
-                });
-                await new Promise(r => setTimeout(r, 10));
+                await this.drawCanvas(inputs, outputs);
             }
         }
         this.setPerceptronState(state => {
@@ -129,6 +71,58 @@ class BackPropagation {
                 meanError: this.meanError
             }
         });
+    }
+    
+    forward = (inputData, net, a) => {
+        this.layers.forEach((layer, indexLayer) => {
+            layer.forEach((neuron, indexNeuron) => {
+                const input = (indexLayer === 0) ? inputData : a[indexLayer - 1];
+                net[indexLayer][indexNeuron] = -neuron[0];
+                for (let i = 0; i < input.length; i++) {
+                    net[indexLayer][indexNeuron] += neuron[i+1] * input[i];
+                }
+                a[indexLayer][indexNeuron] = this.f(net[indexLayer][indexNeuron]);
+            });
+        });
+    }
+    
+    backward = (sensitivity, inputData, net, a, error) => {
+        //Calcular sensibilidades
+        this.calculateSensitivities(sensitivity, net, error);
+        //Adaptar pesos
+        this.weightsUpdate(sensitivity, inputData, a);
+    }
+
+    calculateSensitivities = (sensitivity, net, error) => {
+        for(let i = this.layers.length-1; i >=0; i--) {
+            if (i === this.layers.length-1) { //adaline neuronas de salida ultima capa
+                this.layers[i].forEach((neuron, j) => {
+                    sensitivity[i][j] = -2 * this.fp(net[i][j]) * error[j];
+                });
+            } else { //Se calcula la sensibilidad con base en la sensibilidad de la capa siguiente
+                this.layers[i].forEach((neuron, j) => {
+                    let sum = 0;
+                    this.layers[i+1].forEach((neuron, k) => {
+                        sum += this.fp(net[i][j]) * neuron[j+1] * sensitivity[i+1][k];
+                    });
+                    sensitivity[i][j] = sum;
+                });
+            }
+        }
+    }
+
+    weightsUpdate = (sensitivity, inputData, a) => {
+        for(let i = this.layers.length-1; i >=0; i--) { //Recorrer capas
+            const inputTemp = (i === 0) ? inputData : a[i-1];
+            const input = JSON.parse(JSON.stringify(inputTemp));
+            input.unshift(-1);
+
+            this.layers[i].forEach((neuron, index) => { //Recorrer neuronas
+                neuron.forEach((weight, j) => {
+                    neuron[j] = weight - (this.learningRate * sensitivity[i][index] * input[j]);
+                });
+            });
+        }
     }
 
     initFitData = () => {
@@ -174,6 +168,23 @@ class BackPropagation {
             });
         });
         return a[a.length-1];
+    }
+
+    async drawCanvas(inputs, outputs) {
+        this.cpDrawer.clearCanvas();
+        this.cpDrawer.drawBarrido(this);
+        this.cpDrawer.drawAxis();
+            inputs.forEach ((point, index) => {
+                let output = outputs[index].indexOf(1);
+                this.cpDrawer.drawPoint(this.cpDrawer.XC(point[0]), this.cpDrawer.YC(point[1]), output);
+            });
+            this.setPerceptronState(state => {
+            return {
+                ...state,
+                meanError: this.meanError
+            }
+        });
+        await new Promise(r => setTimeout(r, 10));
     }
 }
 

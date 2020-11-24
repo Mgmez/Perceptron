@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Form } from 'react-bootstrap';
 import { Button, FormControlLabel, Radio, RadioGroup, TextField, FormLabel,FormControl} from '@material-ui/core';
 import { PerceptronContext } from "./PerceptronContext.js";
-import Adaline from '../algoritmos/Adaline.js';
+// import Adaline from '../algoritmos/Adaline.js';
 import BackPropagation from '../algoritmos/BackPropagationV2.js';
 
 const numCapas = [
@@ -86,6 +86,15 @@ const PerceptronConfigs = (props) => {
             color_aleatorio += hexadecimal[posarray];
         }
         return color_aleatorio;
+    }
+
+    const changeColor = (event, index) => {
+        const { clases } = perceptronState;
+        clases[index].color = event.target.value;
+        setPerceptronState({
+            ...perceptronState,
+            clases
+        })
     }
 
     const aleatorio = (inferior, superior) => {
@@ -226,21 +235,28 @@ const PerceptronConfigs = (props) => {
                         <RadioGroup aria-label="clases" name="clases" value={claseSelect} onChange={cambiarClase}>
                         {
                             clases.map((type, index) =>
-                                <FormControlLabel
-                                    value={type.value}
-                                    key={index}
-                                    control={
-                                        <Radio
-                                            size="small"
-                                            style={{ color: type.color }}
-                                        />
-                                    }
-                                    label={
-                                        <span style={{ fontSize: "12pt" }}>
-                                            {type.label}
-                                        </span>
-                                    }
-                                />
+                                <>
+                                    <FormControlLabel
+                                        value={type.value}
+                                        key={index}
+                                        control={
+                                            <Radio
+                                                size="small"
+                                                style={{ color: type.color }}
+                                            />
+                                        }
+                                        label={
+                                            <span style={{ fontSize: "12pt" }}>
+                                                {type.label}
+                                            </span>
+                                        }
+                                    />
+                                    <input
+                                        type="color"
+                                        value={type.color}
+                                        onChange={(e) => changeColor(e, index)}
+                                    />
+                                </>
                             )
                         }
                     
