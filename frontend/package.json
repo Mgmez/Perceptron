@@ -1,5 +1,5 @@
 {
-  "homepage": "https://Bielma.github.io/perceptron",
+  "homepage": "https://Bielma.github.io/algoritmos-ia",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "uwu": "gh-pages -d build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
