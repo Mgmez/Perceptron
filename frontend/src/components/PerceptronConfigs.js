@@ -3,26 +3,9 @@ import { useForm, Controller } from "react-hook-form";
 import { Form, FormControl } from 'react-bootstrap';
 
 import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
-import Perceptron from '../hooks/Perceptron.js';
+import Perceptron from '../algoritmos/Perceptron.js';
 import { PerceptronContext } from "./PerceptronContext.js";
-import Adaline from '../algoritmos/Adaline.js';
-import Both from "../algoritmos/Both.js"
 
-
-const perceptronTypes = [
-    {
-        label: "Perceptron",
-        value: "perceptron"
-    },
-    {
-        label: "Adaline",
-        value: "adaline"
-    },
-    /*{
-        label: "Ambos",
-        value: "both"
-    }*/
-]
 
 const PerceptronConfigs = (props) =>  {    
     //const [perceptron, setPerceptron] = useState(null);
@@ -45,38 +28,11 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }
-        switch(type) {
-            case "perceptron":
-                perceptron = new Perceptron(perceptronState.x[0].length, values.learning_rate, values.max_epic_number, perceptronState.cpDrawer);
-                break;
-            case "adaline":
-                perceptron = new Adaline(
-                    perceptronState.x[0].length,             
-                    values.max_epic_number,
-                    values.max_error,
-                    values.learning_rate,
-                    perceptronState.cpDrawer
-                );
-                break;
-            case "both":
-                console.log("Ambos")
-                perceptron = new Both(
-                    perceptronState.x[0].length,             
-                    values.max_epic_number,
-                    values.max_error,
-                    values.learning_rate,
-                    perceptronState.cpDrawer
-                );
-                break;
-            default:
-                perceptron = new Adaline(
-                    perceptronState.x[0].length,             
-                    values.max_epic_number,
-                    values.max_error,
-                    values.learning_rate,
-                    perceptronState.cpDrawer
-                );
-        }
+        perceptron = new Perceptron(
+            perceptronState.x[0].length,
+            values.learning_rate,
+            values.max_epic_number,
+            perceptronState.cpDrawer);
 
         setPerceptronState( {
             ...perceptronState,
@@ -150,12 +106,12 @@ const PerceptronConfigs = (props) =>  {
                 }}
                 helperText={errors?.learning_rate?.message}
                 error={!!errors?.learning_rate}
-                defaultValue = {0.1}
+                defaultValue = {0.01}
                 margin="normal"
             />
             <br />
             <Controller
-                defaultValue ={50}
+                defaultValue ={500}
                 as={TextField}
                 name="max_epic_number"
                 control={control}
@@ -168,55 +124,9 @@ const PerceptronConfigs = (props) =>  {
                 margin="normal"
             />
             <br />
-            {
-                (type === "adaline" || type === "both") &&
-                <Controller
-                    defaultValue ={0.01}
-                    as={TextField}
-                    name="max_error"
-                    control={control}
-                    id="max_error"
-                    name="max_error"
-                    label="Error"
-                    rules={{ required: "Este campo es requerido" }}
-                    helperText={errors?.max_error?.message}
-                    error={!!errors?.max_error}
-                    margin="normal"
-                />
-            }
+
            
-            <Controller
-                defaultValue ={"perceptron"}
-                as={RadioGroup}
-                name="type"
-                control={control}
-                id="type"
-                name="type"
-                rules={{ required: "Este campo es requerido" }}
-                helperText={errors?.type?.message}
-                error={!!errors?.type}
-                margin="normal"
-            >
-                {
-                    perceptronTypes.map((type, index) => 
-                        <FormControlLabel
-                            value={type.value}
-                            key={index}
-                            control={
-                                <Radio
-                                    size="small"
-                                    style={{ color: "#03a9f4" }}
-                                />
-                            }
-                            label={
-                                <span style={{ fontSize: "12pt" }}>
-                                    {type.label}
-                                </span>
-                            }
-                        />
-                    )
-                }
-            </Controller>
+
             <br />
 
         

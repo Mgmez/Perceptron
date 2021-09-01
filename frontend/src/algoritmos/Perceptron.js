@@ -20,13 +20,8 @@ class  Perceptron {
 
     fit = async (inputs, outputs) =>{
    
-        const x = inputs || [
-            [3.1, 3.123],
-            [4.12, 1.12],
-            [3.123, 2],
-            [3, 3]
-        ];
-        const y = outputs || [0,0,1,1];
+        const x = inputs;
+        const y = outputs;
         
         var done = false;            
         var epoca = 0;
@@ -34,27 +29,24 @@ class  Perceptron {
         var sumaError = 0;
         while(done === false){
             done = true;
-            //Epocas            
-            console.log("Epoca: ", epoca+1);
+            //Epocas
 
             for(var j = 0; j<x.length; j++){
                 this.error = y[j] - this.predict(x[j]);
-                //console.log("Error: ",this.error );
+
                 sumaError += this.error;
                 if(this.error!=0){
                     done = false;
-                    console.log("Ajustando w");
+
                     this.w[0] += this.learningRate * this.error;
                     for(let k=0;  k< x[j].length; k++){                                                
-                        console.log("Antes del ajuste: w: %f, error: %d, xj", this.w[k+1],  this.error, x[j]);
+
                         this.w[k+1] += this.learningRate * this.error * x[j][k];
-                        console.log("w %d Despues : %f ",k+1, this.w[k+1]);                        
+
                     }
                     x2[0] = this.calcularX2(-5);
                     x2[1] = this.calcularX2(5);
-                    console.log("x2: ", x2);
-                    console.log("w: ", this.w);
-                 
+
                     this.estado.clearCanvas();
                     this.estado.drawAxis();
                     x.forEach ((point, index) => {
