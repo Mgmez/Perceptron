@@ -99,7 +99,7 @@ const PerceptronConfigs = (props) =>  {
                 control={control}
                 id="learning_rate"
                 name="learning_rate"
-                label="Nivel de aprendizaje"
+                label="Learning rate"
                 rules={{
                     required: "Este campo es requerido",
                     validate: value => (parseFloat(value, 10) > 0 && parseFloat(value, 10) <= 1)  || "El valor debe ser entre 0 y 1",
@@ -117,7 +117,7 @@ const PerceptronConfigs = (props) =>  {
                 control={control}
                 id="max_epic_number"
                 name="max_epic_number"
-                label="Número máximo de épocas"
+                label="Épocas máximas"
                 rules={{ required: "Este campo es requerido" }}
                 helperText={errors?.max_epic_number?.message}
                 error={!!errors?.max_epic_number}
@@ -141,16 +141,14 @@ const PerceptronConfigs = (props) =>  {
                 <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
             }
             
-            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>  Inicializar </Button>
+            <Button className="mt-4" variant="contained" type="sumbit" fullWidth color="primary" style={{color: "#ffffff"}}>  Inicializar </Button>
             
         </Form>
         <Form onSubmit={handleSubmit(entrenar)} className="">                        
-            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Entrenar</Button>
+            <Button className="mt-4" type="sumbit" variant="contained" fullWidth color="primary" style={{color: "#ffffff"}}>Entrenar</Button>
         </Form>
         
-        <Form onSubmit={handleSubmit(reiniciar)} className="">                        
-            <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{color: "#03A9F4"}}>Reiniciar</Button>
-        </Form>
+
 
     </>
 }
