@@ -64,10 +64,8 @@ class CPDrawer {
             ctx.fillStyle = "#FF0000";
             ctx.fillRect(x-2,y-2,4,4); //cuadrito
         } else {
-            ctx.fillStyle = "#000000";
-            ctx.beginPath(); 
-            ctx.arc(x-1.25,y-1.25,2.5,0,2*Math.PI);//circulito
-            ctx.stroke();
+            ctx.fillStyle = "#180fe7";
+            ctx.fillRect(x-2,y-2,4,4); //cuadrito azul
         }
     }
 

@@ -48,11 +48,10 @@ const PerceptronConfigs = (props) =>  {
         perceptronState.x.forEach ((point, index) => {
             perceptronState.cpDrawer.drawPoint(perceptronState.cpDrawer.XC(point[0]), perceptronState.cpDrawer.YC(point[1]), perceptronState.y[index])             
         });          
-        if(type === 'adaline'){
-            perceptronState.cpDrawer.drawLine(-5,x2[0],5,x2[1], "#FF0040");
-        }else{
-            perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
-        }
+
+
+        perceptronState.cpDrawer.drawLine(-5, x2[0],5, x2[1], "#0101DF" );
+
         
         
 
@@ -67,12 +66,13 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }           
-        await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);     
-        const xd = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;      
+        await perceptronState.perceptron.fit(perceptronState.x, perceptronState.y);
+
+        const  limiteAlcanzado = perceptronState.perceptron.errorAcumulado.length >= perceptronState.perceptron.iterations;
         setPerceptronState( {
             ...perceptronState,
             entrenado: true,
-            limiteAlcanzado: xd
+            limiteAlcanzado: limiteAlcanzado
         });           
         console.log(perceptronState.perceptron.w);
     }

@@ -75,7 +75,7 @@ class  Perceptron {
     }
     
     predict = (inputs) => {
-            let suma = -this.w[0];         
+            let suma = -this.w[0];
             for(var i = 0; i < inputs.length; i++){
                 suma += this.w[i+1] * inputs[i];               
             }

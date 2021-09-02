@@ -21,7 +21,7 @@ const Alert = (props) => {
         {
             perceptronState.limiteAlcanzado &&
             <div>                        
-                <span className="error">{"No se encontró un hiperplano que los separe"}</span>
+                <span className="error">{"Limite de epocas alcanzado"}</span>
             </div>    
         }
     </>

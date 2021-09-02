@@ -65,7 +65,7 @@ const ErrorChart = (props) =>  {
         <Button onClick={() => afterData()} className="m-4"  variant="contained" color="primary">Anteriores {MAX_ELEMENTS_TO_SHOW}</Button>
         <Button  onClick={() => nextData()} className="m-4"  variant="contained" color="primary">Siguientes {MAX_ELEMENTS_TO_SHOW}</Button>
         <br></br>
-        <span>Mostrando un total de {perceptronState.perceptron.errorAcumulado.length}</span>
+        <span>Total de {perceptronState.perceptron.errorAcumulado.length}</span>
         <ResponsiveContainer>               
           <LineChart 
             //data={perceptronState.perceptron.errorAcumulado} 
