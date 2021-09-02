@@ -28,7 +28,7 @@ function App() {
 
         <Perceptron />
 
-        <Footer />
+
       </PerceptronContext.Provider>
       
       
