@@ -88,8 +88,6 @@ class Adaline {
         return activation;
     }
 
-
-
 }
 
 export default Adaline;
