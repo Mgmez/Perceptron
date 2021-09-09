@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Form, FormControl } from 'react-bootstrap';
 
 import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
-import Perceptron from '../algoritmos/Perceptron.js';
+import Adaline from '../algoritmos/Adaline.js';
 import { PerceptronContext } from "./PerceptronContext.js";
 
 
@@ -28,11 +28,13 @@ const PerceptronConfigs = (props) =>  {
             });
             return;
         }
-        perceptron = new Perceptron(
+        perceptron = new Adaline(
             perceptronState.x[0].length,
-            values.learning_rate,
             values.max_epic_number,
-            perceptronState.cpDrawer);
+            values.max_error,
+            values.learning_rate,
+            perceptronState.cpDrawer
+        );
 
         setPerceptronState( {
             ...perceptronState,
@@ -61,7 +63,7 @@ const PerceptronConfigs = (props) =>  {
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
                 "trainedPerceptron": {
-                    message: "Primero inicialice el perceptron"
+                    message: "Inicialice Adaline"
                 }
             });
             return;
@@ -106,12 +108,12 @@ const PerceptronConfigs = (props) =>  {
                 }}
                 helperText={errors?.learning_rate?.message}
                 error={!!errors?.learning_rate}
-                defaultValue = {0.01}
+                defaultValue = {0.1}
                 margin="normal"
             />
             <br />
             <Controller
-                defaultValue ={500}
+                defaultValue ={100}
                 as={TextField}
                 name="max_epic_number"
                 control={control}
@@ -125,7 +127,19 @@ const PerceptronConfigs = (props) =>  {
             />
             <br />
 
-           
+            <Controller
+                defaultValue ={0.01}
+                as={TextField}
+                name="max_error"
+                control={control}
+                id="max_error"
+                name="max_error"
+                label="Error"
+                rules={{ required: "Este campo es requerido" }}
+                helperText={errors?.max_error?.message}
+                error={!!errors?.max_error}
+                margin="normal"
+            />
 
             <br />
 
