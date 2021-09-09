@@ -28,6 +28,7 @@ class Adaline {
                 errorLineal = outputs[j] - this.f(y);
                 errorCuadratico =  Math.pow(errorLineal,2);
                 sumaError += errorCuadratico;
+                //Ajuste de pesos
                 for(let k=0;  k< inputs[j].length; k++){
                     this.w[k+1] += (this.learningRate * errorLineal * this.f(y)* (1- this.f(y))* inputs[j][k]);
                 }
@@ -56,25 +57,28 @@ class Adaline {
             }
         }
     }
+
+    //Funcion sigmoide
     f = (y) =>{
         const ye = y * -1;
         return  1/(1+(Math.pow(Math.E, ye)));
     }
 
+    //Calcular pendiente
     calcularX2 = (x1) =>{
         return  ((-this.w[1] *  x1) + this.w[0] )/ this.w[2];
     }
 
+    //Funcion de transferencia
     transferencia = (inputs) => {
         let suma = -this.w[0];
         for(var i = 0; i < inputs.length; i++){
             suma += this.w[i+1] * inputs[i];
         }
         return suma;
-
-
     }
 
+    //Funcion de activacion
     predict = (inputs) => {
         let suma = -this.w[0];
         for(var i = 0; i < inputs.length; i++){
@@ -82,7 +86,6 @@ class Adaline {
         }
         const activation = suma  >= 0 ? 1 : 0;
         return activation;
-
     }
 
 
