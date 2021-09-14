@@ -52,7 +52,7 @@ class  Perceptron {
                     x.forEach ((point, index) => {
                         this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), y[index])    
                     })                    
-                    this.estado.drawLine(-5,x2[0],5,x2[1], "#0101DF")
+                    this.estado.drawLine(-5,x2[0],5,x2[1], "#fa0e11")
                     await new Promise(r => setTimeout(r, 30));
                     
                     

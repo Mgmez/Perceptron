@@ -5,7 +5,7 @@ import CPDrawer from "../utils/CPDrawer";
 let cpDrawer;
 
 const CartesianPlane = (props) => {
-    //const [trainingSet, setTrainingSet] = useState([]);
+
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
 
     const canvasRef = useRef(null)
@@ -25,7 +25,7 @@ const CartesianPlane = (props) => {
     
     const handleClick = (event) => {
         event.preventDefault();
-        const entrenado = perceptronState.entrenado;
+        const entrenado = perceptronState.adalineEntrenado;
         const canvas = canvasRef.current,
             rect = canvas.getBoundingClientRect(),
             physicalXCoordinate = event.clientX - rect.left,
@@ -54,7 +54,7 @@ const CartesianPlane = (props) => {
             cpDrawer.drawPoint(
                 physicalXCoordinate, 
                 physicalYCoordinate, 
-                perceptronState.perceptron.predict([
+                perceptronState.adaline.predict([
                     logicalXCoordinate, 
                     logicalYCoordinate                                        
                 ]));

@@ -1,5 +1,5 @@
 class Adaline {
-    constructor(size, it, error, lr, cp){
+    constructor(size, it, error, lr, cp, perceptronx1, perceptronx2){
         this.estado = cp;
         this.w  = [];
         this.learningRate = parseFloat(lr);
@@ -9,6 +9,8 @@ class Adaline {
         for(var i = 0; i<size+1  ; i++){
             this.w[i] = Math.random() * (5 - (-5)) + (-5);
         }
+        this.px1 = perceptronx1
+        this.px2 = perceptronx2
     }
 
     fit = async (inputs, outputs) =>{
@@ -36,12 +38,14 @@ class Adaline {
             x2[0] = this.calcularX2(-5);
             x2[1] = this.calcularX2(5);
 
+
             this.estado.clearCanvas();
             this.estado.drawAxis();
             inputs.forEach ((point, index) => {
                 this.estado.drawPoint(this.estado.XC(point[0]), this.estado.YC(point[1]), outputs[index])
             });
-            this.estado.drawLine(-5,x2[0],5,x2[1], "#FF0040")
+            this.estado.drawLine(-5, this.px1,5, this.px2, "#fa0e11") //perceptron hiperplano
+            this.estado.drawLine(-5,x2[0],5,x2[1], "#0101DF")
             await new Promise(r => setTimeout(r, 30));
 
             errorCuadraticoMedio = sumaError / inputs.length;

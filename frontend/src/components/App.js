@@ -10,11 +10,14 @@ import PerceptronA from '../algoritmos/Perceptron.js';
 function App() { 
   const [perceptronState, setPerceptronState] = useState({
     perceptron : null,
+    adaline: null,
     entrenado: false,
     x : [],
-    y : [],    
+    y : [],
     cpDrawer: null,
-    limiteAlcanzado: false
+    limiteAlcanzado: false,
+      adalineEntrenado:false,
+      limiteAlcanzadoAdaline: false
   });
 
  

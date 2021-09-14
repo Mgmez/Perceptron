@@ -13,8 +13,8 @@ const ErrorChart = (props) =>  {
 
 
     useEffect(() => {
-      setInfoGrouped(groupElements(perceptronState.perceptron.errorAcumulado));
-      let firstDataToShow = groupElements(perceptronState.perceptron.errorAcumulado);
+      setInfoGrouped(groupElements(perceptronState.adaline.errorAcumulado));
+      let firstDataToShow = groupElements(perceptronState.adaline.errorAcumulado);
       setDataToShow(firstDataToShow[itemsViewed].data);
     }, [])
 
@@ -65,10 +65,10 @@ const ErrorChart = (props) =>  {
         <Button onClick={() => afterData()} className="m-4"  variant="contained" color="primary">Anteriores {MAX_ELEMENTS_TO_SHOW}</Button>
         <Button  onClick={() => nextData()} className="m-4"  variant="contained" color="primary">Siguientes {MAX_ELEMENTS_TO_SHOW}</Button>
         <br></br>
-        <span>Total de {perceptronState.perceptron.errorAcumulado.length}</span>
+        <span>Total de {perceptronState.adaline.errorAcumulado.length}</span>
         <ResponsiveContainer>               
           <LineChart 
-            //data={perceptronState.perceptron.errorAcumulado} 
+
             data={dataToShow}
             margin={{
               top: 5, right: 30, left: 20, bottom: 5,

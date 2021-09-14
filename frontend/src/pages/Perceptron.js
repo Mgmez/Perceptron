@@ -24,7 +24,7 @@ const Perceptron = (props) => {
                         <PerceptronConfigs/>
                     </div>
                     {
-                        perceptronState.entrenado &&
+                        (perceptronState.entrenado || perceptronState.adalineEntrenado) &&
                         <Row>
                             <Col
                                 md={{span: 12}}
@@ -51,7 +51,7 @@ const Perceptron = (props) => {
 
 
                 {
-                    perceptronState.entrenado &&
+                    perceptronState.adalineEntrenado &&
 
 
                     <Col sm={{span: 6}}>
