@@ -19,8 +19,8 @@ function App() {
     iniciado: false,
     meanError: []
   });
- 
-  return (
+
+    return (
     <div className="App">
       <PerceptronContext.Provider value = {{
           perceptronState, 
@@ -30,7 +30,7 @@ function App() {
 
         <Perceptron />
 
-        <Footer />
+
       </PerceptronContext.Provider>
     </div>
   );
