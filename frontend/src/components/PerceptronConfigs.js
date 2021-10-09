@@ -41,8 +41,7 @@ const PerceptronConfigs = (props) => {
     const type = watch("type");
 
     const cambiarClase = (event) => {
-        console.log("cambio clase");
-        console.log(event.target.value);
+
         setClaseSelect(event.target.value);
         setPerceptronState({
             ...perceptronState,
@@ -50,23 +49,23 @@ const PerceptronConfigs = (props) => {
         });
     }
     const iniciar = async (values) => {
-        console.log(values);
+
         if (values.type === 'unacapa') {
             setInitConf({
-                num_class: values.max_class,
+                num_class: 3,
                 num_capas: 3,
                 num_n_capa1: values.max_capa1
             });
         } else {
             setInitConf({
-                num_class: values.max_class,
+                num_class:3,
                 num_capas: 4,
                 num_n_capa1: values.max_capa1,
                 num_n_capa2: values.max_capa2
             });
         }
 
-        for (let i = 1; i <= values.max_class; i++) {
+        for (let i = 1; i <= 3; i++) {
             clases.push({
                 label: "clase" + i,
                 color: randomColor(),
@@ -256,11 +255,7 @@ const PerceptronConfigs = (props) => {
                                             </span>
                                         }
                                     />
-                                    <input
-                                        type="color"
-                                        value={type.color}
-                                        onChange={(e) => changeColor(e, index)}
-                                    />
+
                                 </>
                             )
                         }
@@ -278,37 +273,21 @@ const PerceptronConfigs = (props) => {
                         <span className="error">{perceptronErrors.trainedPerceptron.message}</span>
                     }
 
-                    <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{ color: "#03A9F4" }}>  Inicializar </Button>
+                    <Button className="mt-4" type="sumbit" fullWidth color="primary"  variant="contained">  Inicializar </Button>
 
                 </Form>
                 <Form onSubmit={handleSubmit(entrenar)} className="">
-                    <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{ color: "#03A9F4" }}>Entrenar</Button>
+                    <Button className="mt-4" type="sumbit" fullWidth color="primary"  variant="contained">Entrenar</Button>
                 </Form>
 
-                <Form onSubmit={handleSubmit(reiniciar)} className="">
-                    <Button className="mt-4" type="sumbit" fullWidth color="primary" style={{ color: "#03A9F4" }}>Reiniciar</Button>
-                </Form>
+
             </>
         );
     } else {
         return (
             <>
                 <Form onSubmit={handleSubmit(iniciar)} className="">
-                    <Controller
-                        defaultValue={3}
-                        as={TextField}
-                        name="max_class"
-                        control={control}
-                        id="max_class"
-                        name="max_class"
-                        label="Numero de clases"
-                        rules={{ required: "Este campo es requerido" }}
-                        helperText={errors?.max_error?.message}
-                        error={!!errors?.max_error}
-                        margin="normal"
-                    />
 
-                    <p></p>
                     <span className="">{"Numero de capas ocultas"}</span>
                     <Controller
                         defaultValue={"unacapa"}
@@ -382,8 +361,8 @@ const PerceptronConfigs = (props) => {
                         className="mt-4"
                         type="sumbit"
                         fullWidth color="primary"
-                        style={{ color: "#03A9F4" }}
                         onSubmit
+                        variant="contained"
                     >Continuar</Button>
                 </Form>
             </>
