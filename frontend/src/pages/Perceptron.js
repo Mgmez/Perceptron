@@ -1,3 +1,4 @@
+
 import React, { useContext, useState, Component } from "react";
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -103,7 +104,7 @@ const Perceptron = (props) => {
                     sm={{ span: 12 }}
                 >
 
-                    {  
+                    {
                         perceptronState.entrenado &&
                         <Row>
                             <Col
@@ -121,7 +122,7 @@ const Perceptron = (props) => {
                 </Col>
             </Row>
 
-           
+
             <Row>
                 <Col sm={{span: 12}}>
                     <div className="card card--box">
@@ -152,7 +153,7 @@ const Perceptron = (props) => {
                     </div>
                 </Col>
             </Row>*/}
-         
+
         </Container>
     </>
 }
