@@ -1,3 +1,4 @@
+
 import React,{useContext, useEffect, useState } from "react";
 import { Button, TextField } from '@material-ui/core';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,  } from 'recharts';
@@ -68,8 +69,8 @@ const ErrorChart = (props) =>  {
         <br></br>
         <span>Mostrando un total de {perceptronState.meanError.length}</span>
         <ResponsiveContainer>
-          <LineChart 
-            //data={perceptronState.meanError} 
+          <LineChart
+            //data={perceptronState.meanError}
             data={dataToShow}
             margin={{
               top: 5, right: 30, left: 20, bottom: 5,

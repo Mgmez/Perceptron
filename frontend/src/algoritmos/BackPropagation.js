@@ -1,3 +1,4 @@
+
 import * as math from "mathjs";
 
 class BackPropagation {
@@ -19,7 +20,7 @@ class BackPropagation {
         }
         this.layers.forEach((layer, index) => {
             for(let i = 0; i < layersNeuronsCount[index]; i++) {
-                const count =  index === 0 
+                const count =  index === 0
                 ? 2
                 :  this.layers[index-1].length;
                 const weights = []
@@ -55,7 +56,7 @@ class BackPropagation {
                     }
                     // console.log("Salida", a[indexLayer]);
                 });
-                
+
                 //Calcular el error
                 // error = outputs[indexInput] - a[a.length-1]; //Deseada - obtenida (vector)
                 const error = math.subtract(outputs[indexInput], a[a.length-1]);
@@ -63,7 +64,7 @@ class BackPropagation {
                     return accumulator + Math.pow(value,2);
                 }, 0);
                 accumulatedSquareError += Math.sqrt(squareSum);
-                
+
                 //Back-propagation (backward)
                 //Calcular sensibilidades
                 //Para las derivadas es vector de derivadas multiplicado por matriz identidad
@@ -74,7 +75,7 @@ class BackPropagation {
                         diferential[j] = [];
                         for(let k = 0; k < net[i].length; k++) {
                             diferential[j][k] = (j === k) ? this.fp(net[i][j]) : 0;
-                        }    
+                        }
                     }
                     if (i === this.layers.length-1) { //adaline neuronas de salida ultima capa
                         // -2 * f'(n[i]) (d-a)
@@ -96,7 +97,7 @@ class BackPropagation {
                 }
                 //Adaptar pesos
                 for(let i = this.layers.length-1; i >=0; i--) { //Recorrer capas
-                    // cambio de w = 
+                    // cambio de w =
                     const inputTemp = (i === 0) ? inputData : a[i-1];
                     const input = JSON.parse(JSON.stringify(inputTemp));
                     input.unshift(-1);
@@ -166,7 +167,7 @@ class BackPropagation {
     }
 
     f = (y) =>{
-        const ye = y * -1; 
+        const ye = y * -1;
         return  1/(1+(Math.pow(Math.E, ye)));
     }
 

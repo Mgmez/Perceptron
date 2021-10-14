@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState, useContext} from "react";
 import { PerceptronContext } from "./PerceptronContext";
 import CPDrawer from "../utils/CPDrawer";
@@ -9,7 +10,7 @@ const CartesianPlane = (props) => {
     const {perceptronState, setPerceptronState} = useContext(PerceptronContext);
 
     const canvasRef = useRef(null)
-    
+
     useEffect(() => {
         canvasRef.current.style.width = "auto";
         cpDrawer = new CPDrawer(canvasRef.current, perceptronState.clases)
@@ -19,10 +20,10 @@ const CartesianPlane = (props) => {
         })
 
         cpDrawer.drawAxis();
-        
+
     }, [])
-    
-    
+
+
     const handleClick = (event) => {
         event.preventDefault();
         const entrenado = perceptronState.entrenado;
@@ -32,7 +33,7 @@ const CartesianPlane = (props) => {
             physicalXCoordinate = event.clientX - rect.left,
             physicalYCoordinate = event.clientY - rect.top,
             logicalXCoordinate = cpDrawer.XL(physicalXCoordinate),
-            logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),    
+            logicalYCoordinate = cpDrawer.YL(physicalYCoordinate),
             value = [];
             for (let i = 0; i < perceptronState.clases.length; i++) {
                 value[i] = (i == clase - 1) ? 1 : 0;
@@ -40,7 +41,7 @@ const CartesianPlane = (props) => {
 
         if(!entrenado){
             cpDrawer.drawPoint(physicalXCoordinate, physicalYCoordinate, clase-1);
-            setPerceptronState({            
+            setPerceptronState({
                 ...perceptronState,
                 x: [
                     ...perceptronState.x,
@@ -56,16 +57,16 @@ const CartesianPlane = (props) => {
             });
         }else{
             cpDrawer.drawPoint(
-                physicalXCoordinate, 
-                physicalYCoordinate, 
+                physicalXCoordinate,
+                physicalYCoordinate,
                 perceptronState.perceptron.predict([
-                    logicalXCoordinate, 
-                    logicalYCoordinate                                        
+                    logicalXCoordinate,
+                    logicalYCoordinate
                 ]));
         }
-        
 
-        
+
+
     }
 
     return <>

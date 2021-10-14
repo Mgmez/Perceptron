@@ -1,3 +1,4 @@
+
 import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Form } from 'react-bootstrap';
@@ -22,7 +23,7 @@ let clases = [];
 
 
 const PerceptronConfigs = (props) => {
-   
+
     const { handleSubmit, register, errors, control, watch, getValues } = useForm(
         {
             defaultValues: {
@@ -107,8 +108,8 @@ const PerceptronConfigs = (props) => {
     }
 
     const iniciarPesos = async (values) => {
-                    
-        
+
+
         setPerceptronErrors({});
         if (!perceptronState?.x?.length) {
             setPerceptronErrors({
@@ -118,7 +119,7 @@ const PerceptronConfigs = (props) => {
             });
             return;
         }
- 
+
         const neuronsPerLayer = [2, initConf.num_n_capa1];
         if (initConf.num_capas === 4) {
             neuronsPerLayer.push(initConf.num_n_capa2);
@@ -138,14 +139,14 @@ const PerceptronConfigs = (props) => {
             ...perceptronState,
             perceptron: backP,
         });
-        perceptronState.cpDrawer.drawBarrido(backP);    
+        perceptronState.cpDrawer.drawBarrido(backP);
         console.log(backP.layers);
 
     }
 
 
     const entrenar = async () => {
-       
+
         setPerceptronErrors({});
         if (!perceptronState.perceptron) {
             setPerceptronErrors({
@@ -164,8 +165,8 @@ const PerceptronConfigs = (props) => {
                 limiteAlcanzado: xd
             }
         });
-        //perceptronState.cpDrawer.drawBarrido(perceptronState.perceptron);    
-         
+        //perceptronState.cpDrawer.drawBarrido(perceptronState.perceptron);
+
     }
 
 
@@ -186,9 +187,9 @@ const PerceptronConfigs = (props) => {
     if (iniciado) {
         return (
             <>
-                
+
                 <Form onSubmit={handleSubmit(iniciarPesos)} className="">
-                    
+
                     <Controller
                         as={TextField}
                         name="learning_rate"
@@ -259,7 +260,7 @@ const PerceptronConfigs = (props) => {
                                 </>
                             )
                         }
-                    
+
                         </RadioGroup>
                     </FormControl>
 

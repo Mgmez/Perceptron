@@ -5,7 +5,7 @@ const Header = (props) =>  {
     return <>
 
         <div  className="toolbar" role="banner">
-            <h3 className={"ml-4"}>Inteligencia Artificial II.</h3>
+            <h3 className={"ml-4"}>Inteligencia Artificial II.- Backpropagation</h3>
         </div>
 
         <div className="content">

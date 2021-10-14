@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useContext } from "react";
 import { PerceptronContext } from "./PerceptronContext";
 import ForceGraph3D from '3d-force-graph';
@@ -87,10 +88,10 @@ const NN2 = (props) => {
 
   });//capa
 
-  
+
  //Links
   for(let capa = 1; capa < perceptronState.perceptron.layers.length; capa++){
-    for (let i = 0; i < nodes.length; i++) {        
+    for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].group === capa){
         for (let j = 1; j < nodes[i].weight.length; j++) {
           links.push({
@@ -99,8 +100,8 @@ const NN2 = (props) => {
             value: nodes[i].weight[j],
             weigth: nodes[i].weight[j]
           })
-        }    
-        
+        }
+
       }
 
 

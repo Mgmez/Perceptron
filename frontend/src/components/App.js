@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import '../styles/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,14 +8,14 @@ import Perceptron from '../pages/Perceptron';
 import {PerceptronContext} from '../components/PerceptronContext';
 
 
-function App() { 
+function App() {
   const [perceptronState, setPerceptronState] = useState({
     perceptron : null,
     entrenado: false,
     x : [],
-    y : [],    
+    y : [],
     cpDrawer: null,
-    limiteAlcanzado: false, 
+    limiteAlcanzado: false,
     claseSelect: "1",
     iniciado: false,
     meanError: []
@@ -23,7 +24,7 @@ function App() {
     return (
     <div className="App">
       <PerceptronContext.Provider value = {{
-          perceptronState, 
+          perceptronState,
           setPerceptronState
       }}>
         <Header />

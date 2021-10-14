@@ -1,3 +1,4 @@
+
 class BackPropagation {
     constructor(layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber, cpDrawer, setPerceptronState){
         console.log("data: ",layersCount, layersNeuronsCount, learningRate, maxErrorAllowed, maxEpicNumber)
@@ -17,7 +18,7 @@ class BackPropagation {
         }
         this.layers.forEach((layer, index) => {
             for(let i = 0; i < layersNeuronsCount[index]; i++) {
-                const count =  index === 0 
+                const count =  index === 0
                 ? 2
                 :  this.layers[index-1].length;
                 const weights = []
@@ -40,7 +41,7 @@ class BackPropagation {
 
                 //Obtener salidas de cada capa (forward)
                 this.forward(inputData, net, a);
-                
+
                 //Calcular el error
                 const error = [];
                 outputs[indexInput].forEach((output, index) => {
@@ -50,7 +51,7 @@ class BackPropagation {
                     return accumulator + Math.pow(value,2);
                 }, 0);
                 accumulatedSquareError += Math.sqrt(squareSum);
-                
+
                 //Back-propagation (backward)
                 this.backward(sensitivity, inputData, net, a, error);
             });
@@ -72,7 +73,7 @@ class BackPropagation {
             }
         });
     }
-    
+
     forward = (inputData, net, a) => {
         this.layers.forEach((layer, indexLayer) => {
             layer.forEach((neuron, indexNeuron) => {
@@ -85,7 +86,7 @@ class BackPropagation {
             });
         });
     }
-    
+
     backward = (sensitivity, inputData, net, a, error) => {
         //Calcular sensibilidades
         this.calculateSensitivities(sensitivity, net, error);
@@ -138,7 +139,7 @@ class BackPropagation {
     }
 
     f = (y) =>{
-        const ye = y * -1; 
+        const ye = y * -1;
         return  1/(1+(Math.pow(Math.E, ye)));
     }
 
